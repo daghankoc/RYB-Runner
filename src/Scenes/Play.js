@@ -18,8 +18,10 @@ class Play extends Phaser.Scene {
     }
     create() {
         
-
+        //Adding inputes to use
         spaceBar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+        keyLeft = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
+        keyRight = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
 
         //setting the background color white
         this.cameras.main.setBackgroundColor('#FFFFFF');
@@ -59,6 +61,30 @@ class Play extends Phaser.Scene {
             //changes the frame of the spritesheet to blue
             playerShip.setFrame(1);
             this.circleOutline.setPosition(330, 935);
+        }
+
+        //Tween movement to right lane
+        if(Phaser.Input.Keyboard.JustDown(keyRight) && currentLane < 2){
+
+            this.add.tween({
+                targets: playerShip,
+                x : '+=200',
+                duration: 250,
+                ease: 'Cubic'
+            })
+            currentLane ++;
+        }
+        
+        //Tween movement to left lane
+        if(Phaser.Input.Keyboard.JustDown(keyLeft) && currentLane > 0){
+
+            this.add.tween({
+                targets: playerShip,
+                x : '-=200',
+                duration: 250,
+                ease: 'Cubic'
+            })
+            currentLane --;
         }
 
         //scrolling tile sprite

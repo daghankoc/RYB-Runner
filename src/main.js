@@ -18,4 +18,8 @@ let playerShip = null;
 let screenCenterY = game.config.height/2;
 let screenCenterX = game.config.width/2;
 let laneCount;
+
+//current lane of the player to restrict its movement
+let currentLane = 1;
+
 let difficulty;
