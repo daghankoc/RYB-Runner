@@ -6,6 +6,8 @@ class Play extends Phaser.Scene {
         //loading the assets   
         this.load.image('lane1', './assets/lane.png');
         this.load.image('UI_circle','./assets/UI_circle.png');
+        this.load.image('UI_circle_outline','./assets/UI_circle_outline.png');
+
         //loading the different player colors as spritesheets
         //frame 1 = red, 2 = blue,3 = yellow 
         this.load.spritesheet('player', "./assets/player_ss.png",{
@@ -33,26 +35,32 @@ class Play extends Phaser.Scene {
 
         
         //creating a bottom UI bar for the color indicator
+        this.circleOutline = this.add.sprite(270, 935, 'UI_circle_outline').setOrigin(0.5);
+        this.circleOutline.setDepth('2');
 
         this.add.rectangle(0, screenCenterY * 1.9,screenCenterX * 2 , screenCenterY / 3, "0xffffff").setOrigin(0, 0);
-        this.redUI = this.add.sprite(270, 935, 'UI_circle').setOrigin(0.5);
-        this.redUI.setTint("0xCF1313");
-        this.redUI.setDepth('1');
+        this.redCircle = this.add.sprite(270, 935, 'UI_circle').setOrigin(0.5);
+        this.redCircle.setTint("0xCF1313");
+        this.redCircle.setDepth('1');
         
-        this.redUI1 = this.add.sprite(330, 935, 'UI_circle').setOrigin(0.5);
-        this.redUI1.setTint("0x1181D9");
-        this.redUI1.setDepth('1');
+        this.blueCircle = this.add.sprite(330, 935, 'UI_circle').setOrigin(0.5);
+        this.blueCircle.setTint("0x1181D9");
+        this.blueCircle.setDepth('1');
 
-        this.redUI2 = this.add.sprite(390, 935, 'UI_circle').setOrigin(0.5);
-        this.redUI2.setTint("0xeed456");
-        this.redUI2.setDepth('1');
+        this.yellowCircle = this.add.sprite(390, 935, 'UI_circle').setOrigin(0.5);
+        this.yellowCircle.setTint("0xeed456");
+        this.yellowCircle.setDepth('1');
         
  
     }
     update(){
         if(Phaser.Input.Keyboard.JustDown(spaceBar)){
-          
+            
+            //changes the frame of the spritesheet to blue
+            playerShip.setFrame(1);
+            this.circleOutline.setPosition(330, 935);
         }
+
         //scrolling tile sprite
         this.lane1.tilePositionY -= 4;
     
