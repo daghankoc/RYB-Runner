@@ -27,9 +27,11 @@ class Play extends Phaser.Scene {
         this.cameras.main.setBackgroundColor('#FFFFFF');
 
         // placing the assets
-        //playerShip = new Player(this, screenCenterX - 17, screenCenterY +  (screenCenterY / 2), 'player', 0 )
-        playerShip  = this.add.sprite(screenCenterX - 17, screenCenterY +  (screenCenterY / 2), 'player').setOrigin(0,0); 
+        playerShip  = this.add.sprite(screenCenterX - 17, screenCenterY +  (screenCenterY / 2), 'player').setOrigin(0,0);
+
+        //setting the player to color red for the start
         playerShip.setFrame(0);
+        playerShip.currentFrame = 0 
         this.lane1 = this.add.tileSprite(screenCenterX - 60, 0, 120, 960, 'lane1').setOrigin(0, 0);
 
         //rendering the ship above the lane
@@ -56,14 +58,39 @@ class Play extends Phaser.Scene {
  
     }
     update(){
+
+
+
+        //Color changing with the spacebar key
         if(Phaser.Input.Keyboard.JustDown(spaceBar)){
             
-            //changes the frame of the spritesheet to blue
-            playerShip.setFrame(1);
-            this.circleOutline.setPosition(330, 935);
+           
+            if (playerShip.currentFrame == 0)
+            {
+                console.log("Color switched to blue");
+                //changes the frame of the spritesheet to blue
+                playerShip.setFrame(1);
+                playerShip.currentFrame = 1;
+                this.circleOutline.setPosition(330, 935);
+            } else if (playerShip.currentFrame == 1)
+            {
+                console.log("Color switched to yellow");
+                //changes the frame of the spritesheet to blue
+                playerShip.setFrame(2);
+                playerShip.currentFrame = 2;
+                this.circleOutline.setPosition(390, 935);
+            } else if(playerShip.currentFrame == 2)
+            {
+                console.log("Color switched to red");
+                //changes the frame of the spritesheet to blue
+                playerShip.setFrame(0);
+                playerShip.currentFrame = 0;
+                this.circleOutline.setPosition(270, 935);
+            }
+            
         }
 
-        //Tween movement to right lane
+        //Tween movement to right lane with right arrow key 
         if(Phaser.Input.Keyboard.JustDown(keyRight) && currentLane < 2){
 
             this.add.tween({
@@ -75,9 +102,8 @@ class Play extends Phaser.Scene {
             currentLane ++;
         }
         
-        //Tween movement to left lane
+        //Tween movement to left lane with left arrow key
         if(Phaser.Input.Keyboard.JustDown(keyLeft) && currentLane > 0){
-
             this.add.tween({
                 targets: playerShip,
                 x : '-=200',
