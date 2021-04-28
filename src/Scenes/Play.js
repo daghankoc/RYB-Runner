@@ -4,9 +4,12 @@ class Play extends Phaser.Scene {
     }
     preload() {
         //loading the assets   
-        this.load.image('lane1', './assets/lane.png');
+        this.load.image('lane1', './assets/Rlane.png');
+        this.load.image('lane2', './assets/Blane.png');
+        this.load.image('lane3', './assets/Ylane.png');
         this.load.image('UI_circle','./assets/UI_circle.png');
         this.load.image('UI_circle_outline','./assets/UI_circle_outline.png');
+       
 
         //loading the different player colors as spritesheets
         //frame 1 = red, 2 = blue,3 = yellow 
@@ -28,11 +31,17 @@ class Play extends Phaser.Scene {
 
         // placing the assets
         playerShip  = this.add.sprite(screenCenterX - 17, screenCenterY +  (screenCenterY / 2), 'player').setOrigin(0,0);
+        this.lane1 = this.add.tileSprite(screenCenterX - 60, 0, 120, 960, 'lane1').setOrigin(0, 0);
+        this.lane2 = this.add.tileSprite(screenCenterX - 180, 0, 120, 960, 'lane2').setOrigin(0, 0);
+        this.lane3 = this.add.tileSprite(screenCenterX + 60, 0, 120, 960, 'lane3').setOrigin(0, 0);
+
+
 
         //setting the player to color red for the start
         playerShip.setFrame(0);
         playerShip.currentFrame = 0 
-        this.lane1 = this.add.tileSprite(screenCenterX - 60, 0, 120, 960, 'lane1').setOrigin(0, 0);
+
+       
 
         //rendering the ship above the lane
         playerShip.setDepth('1');    
@@ -92,31 +101,25 @@ class Play extends Phaser.Scene {
 
         //Tween movement to right lane with right arrow key 
         if(Phaser.Input.Keyboard.JustDown(keyRight) && currentLane < 2){
-
             this.add.tween({
                 targets: playerShip,
-                x : '+=200',
+                x : '+=120',
                 duration: 250,
                 ease: 'Cubic'
             })
             currentLane ++;
         }
-        
         //Tween movement to left lane with left arrow key
         if(Phaser.Input.Keyboard.JustDown(keyLeft) && currentLane > 0){
             this.add.tween({
                 targets: playerShip,
-                x : '-=200',
+                x : '-= 120',
                 duration: 250,
                 ease: 'Cubic'
             })
             currentLane --;
         }
-
         //scrolling tile sprite
         this.lane1.tilePositionY -= 4;
-    
     }
-
-
 }
