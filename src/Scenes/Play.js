@@ -32,9 +32,9 @@ class Play extends Phaser.Scene {
 
         // placing the assets
         playerShip  = this.physics.add.sprite(screenCenterX - 17, screenCenterY +  (screenCenterY / 2), 'player').setOrigin(0,0);
-        this.lane1 = this.physics.add.sprite(screenCenterX - 60, 0, 'lane1').setOrigin(0, 0);
-        this.lane2 = this.add.tileSprite(screenCenterX - 180, 0, 120, 960, 'lane2').setOrigin(0, 0);
-        this.lane3 = this.add.tileSprite(screenCenterX + 60, 0, 120, 960, 'lane3').setOrigin(0, 0);
+        this.lane1 = this.physics.add.sprite(screenCenterX - 100, 0, 'lane1').setOrigin(0, 0);
+        this.lane2 = this.physics.add.sprite(screenCenterX - 300, 0, 'lane2').setOrigin(0, 0);
+        this.lane3 = this.physics.add.sprite(screenCenterX + 100, 0, 'lane3').setOrigin(0, 0);
         this.yellowblock1 = new Block(this,screenCenterX - 180, -600, 'yellowblock', 0, 2).setOrigin(0, 0);
         //setting the player to color red for the start
         playerShip.setFrame(0);
@@ -119,7 +119,7 @@ class Play extends Phaser.Scene {
         if(Phaser.Input.Keyboard.JustDown(keyRight) && currentLane < 2){
             this.add.tween({
                 targets: playerShip,
-                x : '+=120',
+                x : '+=200',
                 duration: 250,
                 ease: 'Cubic'
             })
@@ -129,7 +129,7 @@ class Play extends Phaser.Scene {
         if(Phaser.Input.Keyboard.JustDown(keyLeft) && currentLane > 0){
             this.add.tween({
                 targets: playerShip,
-                x : '-= 120',
+                x : '-= 200',
                 duration: 250,
                 ease: 'Cubic'
             })
