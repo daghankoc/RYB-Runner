@@ -7,6 +7,7 @@ class Play extends Phaser.Scene {
         this.load.image('lane1', './assets/Rlane.png');
         this.load.image('lane2', './assets/Blane.png');
         this.load.image('lane3', './assets/Ylane.png');
+        this.load.image('yellowblock', './assets/YStartRight.png');
         this.load.image('UI_circle','./assets/UI_circle.png');
         this.load.image('UI_circle_outline','./assets/UI_circle_outline.png');
        
@@ -30,18 +31,22 @@ class Play extends Phaser.Scene {
         this.cameras.main.setBackgroundColor('#FFFFFF');
 
         // placing the assets
-        playerShip  = this.add.sprite(screenCenterX - 17, screenCenterY +  (screenCenterY / 2), 'player').setOrigin(0,0);
-        this.lane1 = this.add.tileSprite(screenCenterX - 60, 0, 120, 960, 'lane1').setOrigin(0, 0);
+        playerShip  = this.physics.add.sprite(screenCenterX - 17, screenCenterY +  (screenCenterY / 2), 'player').setOrigin(0,0);
+        this.lane1 = this.physics.add.sprite(screenCenterX - 60, 0, 'lane1').setOrigin(0, 0);
         this.lane2 = this.add.tileSprite(screenCenterX - 180, 0, 120, 960, 'lane2').setOrigin(0, 0);
         this.lane3 = this.add.tileSprite(screenCenterX + 60, 0, 120, 960, 'lane3').setOrigin(0, 0);
-
-
-
+        this.yellowblock1 = new Block(this,screenCenterX - 180, -600, 'yellowblock', 0, 2).setOrigin(0, 0);
         //setting the player to color red for the start
         playerShip.setFrame(0);
         playerShip.currentFrame = 0 
 
-       
+       // array for all the objects that the player can collide
+        var obstacles = [];
+        
+        obstacles.push(this.lane1);
+        //obstacles.push(this.lane1);
+        //obstacles.push(this.lane1);
+        obstacles.push(this.yellowblock1);
 
         //rendering the ship above the lane
         playerShip.setDepth('1');    
@@ -63,13 +68,24 @@ class Play extends Phaser.Scene {
         this.yellowCircle = this.add.sprite(390, 935, 'UI_circle').setOrigin(0.5);
         this.yellowCircle.setTint("0xeed456");
         this.yellowCircle.setDepth('1');
+
+        //collision between the player and the lane
+        //checking for collision between the player and an array that includes all the obstacles
+        this.physics.add.collider(playerShip, obstacles, function (player, obstacle) {
+            if(playerShip.currentFrame != 0){
+                pause();
+                //playerShip.setVisible(false);
+                console.log("game over")
+
+            }
+        });
         
  
     }
     update(){
 
-
-
+        //this.lane1.body.setSize(this.lane1.width, this.lane1.height, true);
+        this.yellowblock1.update();
         //Color changing with the spacebar key
         if(Phaser.Input.Keyboard.JustDown(spaceBar)){
             
@@ -120,6 +136,7 @@ class Play extends Phaser.Scene {
             currentLane --;
         }
         //scrolling tile sprite
-        this.lane1.tilePositionY -= 4;
+        //this.lane1.tilePositionY -= 4;
+
     }
 }
