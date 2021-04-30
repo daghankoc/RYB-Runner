@@ -13,9 +13,9 @@ class Play extends Phaser.Scene {
 
         //loading the different player colors as spritesheets
         //frame 1 = red, 2 = blue,3 = yellow 
-        this.load.spritesheet('player', "./assets/player_ss.png",{
-            frameWidth: 32,
-            frameHeight: 63,
+        this.load.spritesheet('player', "./assets/arrowRYB.png",{
+            frameWidth: 112,
+            frameHeight: 167,
             });
     
     }
@@ -31,6 +31,7 @@ class Play extends Phaser.Scene {
 
         // placing the assets
         playerShip  = this.add.sprite(screenCenterX - 17, screenCenterY +  (screenCenterY / 2), 'player').setOrigin(0,0);
+        playerShip.scale = 0.5;
         this.lane1 = this.add.tileSprite(screenCenterX - 60, 0, 120, 960, 'lane1').setOrigin(0, 0);
         this.lane2 = this.add.tileSprite(screenCenterX - 180, 0, 120, 960, 'lane2').setOrigin(0, 0);
         this.lane3 = this.add.tileSprite(screenCenterX + 60, 0, 120, 960, 'lane3').setOrigin(0, 0);
@@ -56,11 +57,11 @@ class Play extends Phaser.Scene {
         this.redCircle.setTint("0xCF1313");
         this.redCircle.setDepth('1');
         
-        this.blueCircle = this.add.sprite(330, 935, 'UI_circle').setOrigin(0.5);
+        this.blueCircle = this.add.sprite(390, 935, 'UI_circle').setOrigin(0.5);
         this.blueCircle.setTint("0x1181D9");
         this.blueCircle.setDepth('1');
 
-        this.yellowCircle = this.add.sprite(390, 935, 'UI_circle').setOrigin(0.5);
+        this.yellowCircle = this.add.sprite(330, 935, 'UI_circle').setOrigin(0.5);
         this.yellowCircle.setTint("0xeed456");
         this.yellowCircle.setDepth('1');
         
@@ -76,14 +77,14 @@ class Play extends Phaser.Scene {
            
             if (playerShip.currentFrame == 0)
             {
-                console.log("Color switched to blue");
+                console.log("Color switched to yellow");
                 //changes the frame of the spritesheet to blue
                 playerShip.setFrame(1);
                 playerShip.currentFrame = 1;
                 this.circleOutline.setPosition(330, 935);
             } else if (playerShip.currentFrame == 1)
             {
-                console.log("Color switched to yellow");
+                console.log("Color switched to blue");
                 //changes the frame of the spritesheet to blue
                 playerShip.setFrame(2);
                 playerShip.currentFrame = 2;
