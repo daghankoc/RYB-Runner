@@ -28,7 +28,7 @@ class Play extends Phaser.Scene {
         keyRight = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
 
         //setting the background color to dark grey
-        this.cameras.main.setBackgroundColor('#333333');
+        this.cameras.main.setBackgroundColor('#fbfbe3');
         
         //background testing
         //const map = this.make.tilemap({key: 'map'});
@@ -40,20 +40,20 @@ class Play extends Phaser.Scene {
         //console.log(belowlayer);
 
         //background testing 2
-        // let map = this.add.tilemap('map');
-        // let visuals = map.addTilesetImage('base', 'tiles');
-        // let botLayer = map.createLayer('Tile Layer 1', [visuals], screenCenterX - (tilemapScale * 300), 0);
-        // let topLayer = map.createLayer('Tile Layer 2', [visuals], screenCenterX - (tilemapScale * 300), 0);
-        // botLayer.scale = tilemapScale;
-        // topLayer.scale = tilemapScale;
+        let map = this.add.tilemap('map');
+        let visuals = map.addTilesetImage('base', 'tiles');
+        botLayer = map.createLayer('Tile Layer 1', [visuals], mapX, 0);
+        topLayer = map.createLayer('Tile Layer 2', [visuals], mapX, 0);
+        botLayer.scale = tilemapScale;
+        topLayer.scale = tilemapScale;
 
         //current background
-        this.map = this.add.tilemap('map');
-        this.map.addTilesetImage('base', 'tiles');
-        this.botLayer = this.map.createLayer('Tile Layer 1', this.map.tilesets, screenCenterX - (tilemapScale * 300), 0);
-        this.topLayer = this.map.createLayer('Tile Layer 2', this.map.tilesets, screenCenterX - (tilemapScale * 300), 0);
-        this.botLayer.scale = tilemapScale;
-        this.topLayer.scale = tilemapScale;
+        // this.map = this.add.tilemap('map');
+        // this.map.addTilesetImage('base', 'tiles');
+        // this.botLayer = this.map.createLayer('Tile Layer 1', this.map.tilesets, screenCenterX - (tilemapScale * 300), 0);
+        // this.topLayer = this.map.createLayer('Tile Layer 2', this.map.tilesets, screenCenterX - (tilemapScale * 300), 0);
+        // this.botLayer.scale = tilemapScale;
+        // this.topLayer.scale = tilemapScale;
 
 
         // placing the assets
@@ -165,8 +165,24 @@ class Play extends Phaser.Scene {
 
         }
     
+        
+        updateMap(travelDist, scrollSpeed);
 
-        //code here for sliding the background, or I guess we gotta make the ship move smh.
+
+        function updateMap(dist, speed) {
+            let yPos =((8000 * tilemapScale) * -1) + dist;
+            botLayer.setPosition(mapX, yPos);
+            topLayer.setPosition(mapX, yPos);
+            travelDist += speed;
+            
+
+            if (travelDist > 9400 * tilemapScale) {
+                travelDist = 200;
+                scrollSpeed += 1; //scrollSpeed values must be integers or else you get ghosting.
+            }
+            //console.log(travelDist);
+        }
+        
     }
 
 }

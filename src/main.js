@@ -17,17 +17,29 @@ let spaceBar, keyLeft, keyRight;
 
 // set Global variables
 let playerShip = null;
-let screenCenterY = game.config.height/2;
-let screenCenterX = game.config.width/2;
-let laneCount;
-let isMoving = false;
-let tilemapScale = 0.6;
-let arrowScale = 0.5;
-let arrowY = screenCenterY + (screenCenterY / 2);
+let botLayer = null;
+let topLayer = null;
+// Screen Centers
+const screenCenterY = game.config.height/2;
+const screenCenterX = game.config.width/2;
 
-let arrowDist = 200 * tilemapScale;
-let arrowMovementR = '+=' + (200 * tilemapScale);
-let arrowMovementL = '-=' + (200 * tilemapScale);
+//total distance traveled
+let travelDist = 0;
+//scrolling rate (start)
+let scrollSpeed = 4;
+
+//Size and Scale
+const tilemapScale = 0.6;
+const arrowScale = 0.5;
+const mapX = screenCenterX - (tilemapScale * 300);
+
+//Arrow Y pos
+const arrowY = screenCenterY + (screenCenterY / 2);
+
+//Arrow left right travel distance
+const arrowDist = 200 * tilemapScale;
+const arrowMovementR = '+=' + (200 * tilemapScale);
+const arrowMovementL = '-=' + (200 * tilemapScale);
 
 //current lane of the player to restrict its movement
 let currentLane = 1;
