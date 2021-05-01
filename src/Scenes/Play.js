@@ -8,7 +8,7 @@ class Play extends Phaser.Scene {
 
         //this.load.image('lane1', './assets/lane.png');
         this.load.image('tiles', './assets/rybSpriteSheet.png');
-        this.load.tilemapTiledJSON('map', './assets/testmap_2.json');
+        this.load.tilemapTiledJSON('map', './maps/testmap_2.json');
 
         this.load.image('UI_circle','./assets/UI_circle.png');
         this.load.image('UI_circle_outline','./assets/UI_circle_outline.png');

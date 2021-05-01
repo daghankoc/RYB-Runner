@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>R Y B</title>
+    <link rel="shortcut icon" type="image/ico" href="./assets/favicon.ico"/>
     <script src="./lib/phaser.js"></script>
     <script src="./src/Scenes/Play.js"></script>
     <script src="./src/main.js"></script>
@@ -17,12 +18,19 @@
             margin-left: auto;
             margin-right: auto;
             width: 640px;
-            
+        }
+        #logo {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 300px;
+            height: auto;
+            padding: 20px;
         }
     </style>
 </head>
 <body>
     <div id=phaser_canvas></div>
-    
+    <img id=logo src="./assets/RYB_logo_linear.png"></img>
 </body>
 </html>
