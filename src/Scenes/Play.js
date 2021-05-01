@@ -6,15 +6,12 @@ class Play extends Phaser.Scene {
         //loading the assets   
 
         //this.load.image('lane1', './assets/lane.png');
-        this.load.image('tiles', './assets/yellowsolid.png');
-        this.load.tilemapTiledJSON('map', './assets/redmap.json');
-      
-      
+        this.load.image('tiles', './assets/rybSpriteSheet.png');
+        this.load.tilemapTiledJSON('map', './assets/testmap_2.json');
+
         this.load.image('UI_circle','./assets/UI_circle.png');
         this.load.image('UI_circle_outline','./assets/UI_circle_outline.png');
-       
-
-
+    
         //loading the different player colors as spritesheets
         //frame 1 = red, 2 = blue,3 = yellow 
         this.load.spritesheet('player', "./assets/arrowRYB.png",{
@@ -35,9 +32,11 @@ class Play extends Phaser.Scene {
         
         //background testing
         const map = this.make.tilemap({key: 'map'});
-        const tileset = map.addTilesetImage('map', 'tiles');
-        //const platforms = map.createStaticLayer('Platforms', tileset, 0, 200);
-
+        const tileset = map.addTilesetImage('base', 'tiles');
+        const belowlayer = map.createLayer('Tile Layer 1', tileset, 0, 100);
+        const abovelayer = map.createLayer('Tile Layer 2', tileset, 0, 100);
+        //this.aboveLayer.scale.setTo(game.width/(200 * 3), game.height/(200 * 40));
+        //this.belowLayer.scale.setTo(game.width/(200 * 3), game.height/(200 * 40));
 
         // placing the assets
         playerShip  = this.add.sprite(screenCenterX - 17, screenCenterY +  (screenCenterY / 2), 'player').setOrigin(0,0);
@@ -127,6 +126,6 @@ class Play extends Phaser.Scene {
             currentLane --;
         }
         //scrolling tile sprite
-        this.lane1.tilePositionY -= 4;
+        //this.lane1.tilePositionY -= 4;
     }
 }
