@@ -39,7 +39,7 @@ class Play extends Phaser.Scene {
         belowlayer.scale = 0.6;
 
         // placing the assets
-        playerShip  = this.add.sprite(screenCenterX - 17, screenCenterY +  (screenCenterY / 2), 'player').setOrigin(0,0);
+        playerShip  = this.add.sprite(screenCenterX, screenCenterY +  (screenCenterY / 2), 'player').setOrigin(0.5,0.5);
         playerShip.scale = 0.5;
 
 
@@ -54,19 +54,19 @@ class Play extends Phaser.Scene {
 
         
         //creating a bottom UI bar for the color indicator
-        this.circleOutline = this.add.sprite(270, 935, 'UI_circle_outline').setOrigin(0.5);
+        this.circleOutline = this.add.sprite(270, 935, 'UI_circle_outline').setOrigin(0.5, 0.5);
         this.circleOutline.setDepth('2');
 
-        this.add.rectangle(0, screenCenterY * 1.9,screenCenterX * 2 , screenCenterY / 3, "0xffffff").setOrigin(0, 0);
-        this.redCircle = this.add.sprite(270, 935, 'UI_circle').setOrigin(0.5);
+        this.add.rectangle(0, screenCenterY * 1.9,screenCenterX * 2 , screenCenterY / 3, "0xffffff").setOrigin(0.5, 0.5);
+        this.redCircle = this.add.sprite(270, 935, 'UI_circle').setOrigin(0.5, 0.5);
         this.redCircle.setTint("0xCF1313");
         this.redCircle.setDepth('1');
         
-        this.blueCircle = this.add.sprite(390, 935, 'UI_circle').setOrigin(0.5);
+        this.blueCircle = this.add.sprite(390, 935, 'UI_circle').setOrigin(0.5, 0.5);
         this.blueCircle.setTint("0x1181D9");
         this.blueCircle.setDepth('1');
 
-        this.yellowCircle = this.add.sprite(330, 935, 'UI_circle').setOrigin(0.5);
+        this.yellowCircle = this.add.sprite(330, 935, 'UI_circle').setOrigin(0.5, 0.5);
         this.yellowCircle.setTint("0xeed456");
         this.yellowCircle.setDepth('1');
         
@@ -109,7 +109,7 @@ class Play extends Phaser.Scene {
         if(Phaser.Input.Keyboard.JustDown(keyRight) && currentLane < 2){
             this.add.tween({
                 targets: playerShip,
-                x : '+=120',
+                x : '+=200',
                 duration: 250,
                 ease: 'Cubic'
             })
@@ -119,7 +119,7 @@ class Play extends Phaser.Scene {
         if(Phaser.Input.Keyboard.JustDown(keyLeft) && currentLane > 0){
             this.add.tween({
                 targets: playerShip,
-                x : '-= 120',
+                x : '-= 200',
                 duration: 250,
                 ease: 'Cubic'
             })
