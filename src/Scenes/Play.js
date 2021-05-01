@@ -5,8 +5,8 @@ class Play extends Phaser.Scene {
     preload() {
         //loading the assets   
         //this.load.image('lane1', './assets/lane.png');
-        this.load.image('tiles', ['assets/yellowsolid.png']);
-        this.load.tilemapTiledJSON('map', 'assets/redmap.json');
+        this.load.image('tiles', './assets/yellowsolid.png');
+        this.load.tilemapTiledJSON('map', './assets/redmap.json');
         this.load.image('UI_circle','./assets/UI_circle.png');
         this.load.image('UI_circle_outline','./assets/UI_circle_outline.png');
 
@@ -30,8 +30,8 @@ class Play extends Phaser.Scene {
         this.cameras.main.setBackgroundColor('#FFFFFF');
         
         //background testing
-        var map = this.make.tilemap({ key: 'map', tileWidth: 200, tileHeight: 200});
-        var tileset = map.addTilesetImage('tiles', null, 200, 200, 1, 2);
+        const map = this.make.tilemap({key: 'map'});
+        const tileset = map.addTilesetImage('map', 'tiles');
         //const platforms = map.createStaticLayer('Platforms', tileset, 0, 200);
 
 
