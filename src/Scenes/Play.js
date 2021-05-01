@@ -32,10 +32,6 @@ class Play extends Phaser.Scene {
         // placing the assets
         playerShip  = this.add.sprite(screenCenterX - 17, screenCenterY +  (screenCenterY / 2), 'player').setOrigin(0,0);
         playerShip.scale = 0.5;
-        this.lane1 = this.add.tileSprite(screenCenterX - 60, 0, 120, 960, 'lane1').setOrigin(0, 0);
-        this.lane2 = this.add.tileSprite(screenCenterX - 180, 0, 120, 960, 'lane2').setOrigin(0, 0);
-        this.lane3 = this.add.tileSprite(screenCenterX + 60, 0, 120, 960, 'lane3').setOrigin(0, 0);
-
 
 
         //setting the player to color red for the start
