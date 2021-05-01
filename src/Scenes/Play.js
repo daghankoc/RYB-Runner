@@ -72,19 +72,19 @@ class Play extends Phaser.Scene {
 
         
         //creating a bottom UI bar for the color indicator
-        this.circleOutline = this.add.sprite(270, 936, 'UI_circle_outline').setOrigin(0.5, 0.5);
+        this.circleOutline = this.add.sprite(screenCenterX - (arrowDist/2), 936, 'UI_circle_outline').setOrigin(0.5, 0.5);
         this.circleOutline.setDepth('2');
 
         //this.add.rectangle(0, screenCenterY * 1.9,screenCenterX * 2 , screenCenterY / 3, "0xffffff").setOrigin(0.5, 0.5);
-        this.redCircle = this.add.sprite(270, 935, 'UI_circle').setOrigin(0.5, 0.5);
+        this.redCircle = this.add.sprite(screenCenterX - (arrowDist/2), 935, 'UI_circle').setOrigin(0.5, 0.5);
         this.redCircle.setTint("0xCF1313");
         this.redCircle.setDepth('1');
         
-        this.yellowCircle = this.add.sprite(330, 935, 'UI_circle').setOrigin(0.5, 0.5);
+        this.yellowCircle = this.add.sprite(screenCenterX, 935, 'UI_circle').setOrigin(0.5, 0.5);
         this.yellowCircle.setTint("0xeed456");
         this.yellowCircle.setDepth('1');
 
-        this.blueCircle = this.add.sprite(390, 935, 'UI_circle').setOrigin(0.5, 0.5);
+        this.blueCircle = this.add.sprite(screenCenterX + (arrowDist/2), 935, 'UI_circle').setOrigin(0.5, 0.5);
         this.blueCircle.setTint("0x1181D9");
         this.blueCircle.setDepth('1');
 
@@ -105,21 +105,21 @@ class Play extends Phaser.Scene {
                 //changes the frame of the spritesheet to blue
                 playerShip.setFrame(1);
                 playerShip.currentFrame = 1;
-                this.circleOutline.setPosition(330, 936);
+                this.circleOutline.setPosition(screenCenterX, 936);
             } else if (playerShip.currentFrame == 1)
             {
                 console.log("Color switched to blue");
                 //changes the frame of the spritesheet to blue
                 playerShip.setFrame(2);
                 playerShip.currentFrame = 2;
-                this.circleOutline.setPosition(390, 935);
+                this.circleOutline.setPosition(screenCenterX + (arrowDist/2), 935);
             } else if(playerShip.currentFrame == 2)
             {
                 console.log("Color switched to red");
                 //changes the frame of the spritesheet to blue
                 playerShip.setFrame(0);
                 playerShip.currentFrame = 0;
-                this.circleOutline.setPosition(270, 935);
+                this.circleOutline.setPosition(screenCenterX - (arrowDist/2), 935);
             }
             
         }
@@ -129,7 +129,7 @@ class Play extends Phaser.Scene {
             this.add.tween({
                 targets: playerShip,
                 x : arrowMovementR,
-                duration: 250,
+                duration: 200,
                 ease: 'Cubic',
                 //onStart: function () {recenter(currentLane)},
                 onComplete: function () {recenter(currentLane)},
@@ -141,7 +141,7 @@ class Play extends Phaser.Scene {
             this.add.tween({
                 targets: playerShip,
                 x : arrowMovementL,
-                duration: 250,
+                duration: 200,
                 ease: 'Cubic',
                 //onStart: function () {recenter(currentLane)},
                 onComplete: function () {recenter(currentLane)},
@@ -149,7 +149,7 @@ class Play extends Phaser.Scene {
             currentLane --;
         }
 
-        
+
 
         function recenter(lane) {
             switch(lane) {
