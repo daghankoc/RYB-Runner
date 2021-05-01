@@ -3,8 +3,9 @@ var config = {
     width: 640,
     height: 960,
     
-    scene : Play
-    
+    scene : Play,
+    parent: 'phaser_canvas',
+    autoCenter: true,
 };
 
 
