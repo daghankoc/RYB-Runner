@@ -33,10 +33,10 @@ class Play extends Phaser.Scene {
         //background testing
         const map = this.make.tilemap({key: 'map'});
         const tileset = map.addTilesetImage('base', 'tiles');
-        const belowlayer = map.createLayer('Tile Layer 1', tileset, 0, 100);
-        const abovelayer = map.createLayer('Tile Layer 2', tileset, 0, 100);
-        //this.aboveLayer.scale.setTo(game.width/(200 * 3), game.height/(200 * 40));
-        //this.belowLayer.scale.setTo(game.width/(200 * 3), game.height/(200 * 40));
+        const belowlayer = map.createLayer('Tile Layer 1', tileset, 150, 50);
+        const abovelayer = map.createLayer('Tile Layer 2', tileset, 150, 50);
+        abovelayer.scale = 0.6;
+        belowlayer.scale = 0.6;
 
         // placing the assets
         playerShip  = this.add.sprite(screenCenterX - 17, screenCenterY +  (screenCenterY / 2), 'player').setOrigin(0,0);
