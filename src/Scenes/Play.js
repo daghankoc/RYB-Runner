@@ -3,6 +3,7 @@ class Play extends Phaser.Scene {
         super("playScene");
     }
     preload() {
+        
         //loading the assets   
 
         //this.load.image('lane1', './assets/lane.png');
@@ -18,7 +19,6 @@ class Play extends Phaser.Scene {
             frameWidth: 112,
             frameHeight: 167,
             });
-    
     }
     create() {
         
@@ -27,20 +27,38 @@ class Play extends Phaser.Scene {
         keyLeft = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRight = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
 
-        //setting the background color white
-        this.cameras.main.setBackgroundColor('#FFFFFF');
+        //setting the background color to dark grey
+        this.cameras.main.setBackgroundColor('#333333');
         
         //background testing
-        const map = this.make.tilemap({key: 'map'});
-        const tileset = map.addTilesetImage('base', 'tiles');
-        const belowlayer = map.createLayer('Tile Layer 1', tileset, 150, 50);
-        const abovelayer = map.createLayer('Tile Layer 2', tileset, 150, 50);
-        abovelayer.scale = 0.6;
-        belowlayer.scale = 0.6;
+        //const map = this.make.tilemap({key: 'map'});
+        //const tileset = map.addTilesetImage('base', 'tiles');
+        // const belowlayer = map.createLayer('Tile Layer 1', tileset, screenCenterX - (tilemapScale * 300), 50);
+        // const abovelayer = map.createLayer('Tile Layer 2', tileset, screenCenterX - (tilemapScale * 300), 50);
+        // abovelayer.scale = tilemapScale;
+        // belowlayer.scale = tilemapScale;
+        //console.log(belowlayer);
+
+        //background testing 2
+        // let map = this.add.tilemap('map');
+        // let visuals = map.addTilesetImage('base', 'tiles');
+        // let botLayer = map.createLayer('Tile Layer 1', [visuals], screenCenterX - (tilemapScale * 300), 0);
+        // let topLayer = map.createLayer('Tile Layer 2', [visuals], screenCenterX - (tilemapScale * 300), 0);
+        // botLayer.scale = tilemapScale;
+        // topLayer.scale = tilemapScale;
+
+        //current background
+        this.map = this.add.tilemap('map');
+        this.map.addTilesetImage('base', 'tiles');
+        this.botLayer = this.map.createLayer('Tile Layer 1', this.map.tilesets, screenCenterX - (tilemapScale * 300), 0);
+        this.topLayer = this.map.createLayer('Tile Layer 2', this.map.tilesets, screenCenterX - (tilemapScale * 300), 0);
+        this.botLayer.scale = tilemapScale;
+        this.topLayer.scale = tilemapScale;
+
 
         // placing the assets
-        playerShip  = this.add.sprite(screenCenterX, screenCenterY +  (screenCenterY / 2), 'player').setOrigin(0.5,0.5);
-        playerShip.scale = 0.5;
+        playerShip = this.add.sprite(screenCenterX, arrowY, 'player').setOrigin(0.5,0.5);
+        playerShip.scale = arrowScale;
 
 
         //setting the player to color red for the start
@@ -54,26 +72,27 @@ class Play extends Phaser.Scene {
 
         
         //creating a bottom UI bar for the color indicator
-        this.circleOutline = this.add.sprite(270, 935, 'UI_circle_outline').setOrigin(0.5, 0.5);
+        this.circleOutline = this.add.sprite(270, 936, 'UI_circle_outline').setOrigin(0.5, 0.5);
         this.circleOutline.setDepth('2');
 
-        this.add.rectangle(0, screenCenterY * 1.9,screenCenterX * 2 , screenCenterY / 3, "0xffffff").setOrigin(0.5, 0.5);
+        //this.add.rectangle(0, screenCenterY * 1.9,screenCenterX * 2 , screenCenterY / 3, "0xffffff").setOrigin(0.5, 0.5);
         this.redCircle = this.add.sprite(270, 935, 'UI_circle').setOrigin(0.5, 0.5);
         this.redCircle.setTint("0xCF1313");
         this.redCircle.setDepth('1');
         
+        this.yellowCircle = this.add.sprite(330, 935, 'UI_circle').setOrigin(0.5, 0.5);
+        this.yellowCircle.setTint("0xeed456");
+        this.yellowCircle.setDepth('1');
+
         this.blueCircle = this.add.sprite(390, 935, 'UI_circle').setOrigin(0.5, 0.5);
         this.blueCircle.setTint("0x1181D9");
         this.blueCircle.setDepth('1');
 
-        this.yellowCircle = this.add.sprite(330, 935, 'UI_circle').setOrigin(0.5, 0.5);
-        this.yellowCircle.setTint("0xeed456");
-        this.yellowCircle.setDepth('1');
+        
         
  
     }
     update(){
-
 
 
         //Color changing with the spacebar key
@@ -86,7 +105,7 @@ class Play extends Phaser.Scene {
                 //changes the frame of the spritesheet to blue
                 playerShip.setFrame(1);
                 playerShip.currentFrame = 1;
-                this.circleOutline.setPosition(330, 935);
+                this.circleOutline.setPosition(330, 936);
             } else if (playerShip.currentFrame == 1)
             {
                 console.log("Color switched to blue");
@@ -109,9 +128,11 @@ class Play extends Phaser.Scene {
         if(Phaser.Input.Keyboard.JustDown(keyRight) && currentLane < 2){
             this.add.tween({
                 targets: playerShip,
-                x : '+=200',
+                x : arrowMovementR,
                 duration: 250,
-                ease: 'Cubic'
+                ease: 'Cubic',
+                //onStart: function () {recenter(currentLane)},
+                onComplete: function () {recenter(currentLane)},
             })
             currentLane ++;
         }
@@ -119,13 +140,33 @@ class Play extends Phaser.Scene {
         if(Phaser.Input.Keyboard.JustDown(keyLeft) && currentLane > 0){
             this.add.tween({
                 targets: playerShip,
-                x : '-= 200',
+                x : arrowMovementL,
                 duration: 250,
-                ease: 'Cubic'
+                ease: 'Cubic',
+                //onStart: function () {recenter(currentLane)},
+                onComplete: function () {recenter(currentLane)},
             })
             currentLane --;
         }
-        //scrolling tile sprite
-        //this.lane1.tilePositionY -= 4;
+
+        
+
+        function recenter(lane) {
+            switch(lane) {
+                case 0:
+                    playerShip.setPosition(screenCenterX - arrowDist, arrowY);
+                    break;
+                case 1:
+                    playerShip.setPosition(screenCenterX, arrowY);
+                    break;
+                case 2:
+                    playerShip.setPosition(screenCenterX + arrowDist, arrowY);
+            }
+
+        }
+    
+
+        //code here for sliding the background, or I guess we gotta make the ship move smh.
     }
+
 }
