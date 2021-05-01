@@ -4,12 +4,16 @@ class Play extends Phaser.Scene {
     }
     preload() {
         //loading the assets   
-        this.load.image('lane1', './assets/Rlane.png');
-        this.load.image('lane2', './assets/Blane.png');
-        this.load.image('lane3', './assets/Ylane.png');
+
+        //this.load.image('lane1', './assets/lane.png');
+        this.load.image('tiles', './assets/yellowsolid.png');
+        this.load.tilemapTiledJSON('map', './assets/redmap.json');
+      
+      
         this.load.image('UI_circle','./assets/UI_circle.png');
         this.load.image('UI_circle_outline','./assets/UI_circle_outline.png');
        
+
 
         //loading the different player colors as spritesheets
         //frame 1 = red, 2 = blue,3 = yellow 
@@ -28,6 +32,12 @@ class Play extends Phaser.Scene {
 
         //setting the background color white
         this.cameras.main.setBackgroundColor('#FFFFFF');
+        
+        //background testing
+        const map = this.make.tilemap({key: 'map'});
+        const tileset = map.addTilesetImage('map', 'tiles');
+        //const platforms = map.createStaticLayer('Platforms', tileset, 0, 200);
+
 
         // placing the assets
         playerShip  = this.add.sprite(screenCenterX - 17, screenCenterY +  (screenCenterY / 2), 'player').setOrigin(0,0);
