@@ -97,9 +97,12 @@ class Play extends Phaser.Scene {
 
         //Color changing with the spacebar key
         if(Phaser.Input.Keyboard.JustDown(spaceBar)){
+            
             //getting the tile that the player is on every space bar press
             var tileToCheckTop = topLayer.getTileAtWorldXY(playerShip.x, playerShip.y, true);
-            var tileToCheckTop = botLayer.getTileAtWorldXY(playerShip.x, playerShip.y, true);
+            var tileToCheckBot = botLayer.getTileAtWorldXY(playerShip.x, playerShip.y, true);
+            console.log(tileToCheckTop.index);
+            console.log(tileToCheckBot.index);
                       
            
             if (playerShip.currentFrame == 0)
