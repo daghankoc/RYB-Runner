@@ -97,7 +97,10 @@ class Play extends Phaser.Scene {
 
         //Color changing with the spacebar key
         if(Phaser.Input.Keyboard.JustDown(spaceBar)){
-            
+            //getting the tile that the player is on every space bar press
+            var tileToCheckTop = topLayer.getTileAtWorldXY(playerShip.x, playerShip.y, true);
+            var tileToCheckTop = botLayer.getTileAtWorldXY(playerShip.x, playerShip.y, true);
+                      
            
             if (playerShip.currentFrame == 0)
             {
@@ -149,7 +152,14 @@ class Play extends Phaser.Scene {
             currentLane --;
         }
 
-
+        //getting the tile that the player is on every frame
+        //var tileToCheckTop = topLayer.getTileAtWorldXY(playerShip.x, playerShip.y, true);
+        //var tileToCheckTop = botLayer.getTileAtWorldXY(playerShip.x, playerShip.y, true);
+        
+        //console.log(tileToCheckTop.index);
+        
+        //var color1 = tileToCheck.texture.getPixel(10,10);
+        //console.log(color1);
 
         function recenter(lane) {
             switch(lane) {
