@@ -22,6 +22,9 @@ class Play extends Phaser.Scene {
     }
     create() {
         
+        this.transitioning = false;
+        this.actionQueue = [];
+
         //Adding inputes to use
         spaceBar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         keyLeft = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
@@ -95,64 +98,85 @@ class Play extends Phaser.Scene {
     update(){
 
 
-        //Color changing with the spacebar key
-        if(Phaser.Input.Keyboard.JustDown(spaceBar)){
-            
-            //getting the tile that the player is on every space bar press
-            var tileToCheckTop = topLayer.getTileAtWorldXY(playerShip.x, playerShip.y, true);
-            var tileToCheckBot = botLayer.getTileAtWorldXY(playerShip.x, playerShip.y, true);
-            console.log(tileToCheckTop.index);
-            console.log(tileToCheckBot.index);
-                      
-           
-            if (playerShip.currentFrame == 0)
-            {
-                console.log("Color switched to yellow");
-                //changes the frame of the spritesheet to blue
-                playerShip.setFrame(1);
-                playerShip.currentFrame = 1;
-                this.circleOutline.setPosition(screenCenterX, 936);
-            } else if (playerShip.currentFrame == 1)
-            {
-                console.log("Color switched to blue");
-                //changes the frame of the spritesheet to blue
-                playerShip.setFrame(2);
-                playerShip.currentFrame = 2;
-                this.circleOutline.setPosition(screenCenterX + (arrowDist/2), 935);
-            } else if(playerShip.currentFrame == 2)
-            {
-                console.log("Color switched to red");
-                //changes the frame of the spritesheet to blue
-                playerShip.setFrame(0);
-                playerShip.currentFrame = 0;
-                this.circleOutline.setPosition(screenCenterX - (arrowDist/2), 935);
-            }
-            
-        }
+        
+        
 
         //Tween movement to right lane with right arrow key 
-        if(Phaser.Input.Keyboard.JustDown(keyRight) && currentLane < 2){
-            this.add.tween({
-                targets: playerShip,
-                x : arrowMovementR,
-                duration: 200,
-                ease: 'Cubic',
-                //onStart: function () {recenter(currentLane)},
-                onComplete: function () {recenter(currentLane)},
-            })
-            currentLane ++;
+        if (Phaser.Input.Keyboard.JustDown(keyRight)) {
+            this.actionQueue.push("right");
         }
-        //Tween movement to left lane with left arrow key
-        if(Phaser.Input.Keyboard.JustDown(keyLeft) && currentLane > 0){
-            this.add.tween({
-                targets: playerShip,
-                x : arrowMovementL,
-                duration: 200,
-                ease: 'Cubic',
-                //onStart: function () {recenter(currentLane)},
-                onComplete: function () {recenter(currentLane)},
-            })
-            currentLane --;
+
+        if (Phaser.Input.Keyboard.JustDown(keyLeft)) {
+            this.actionQueue.push("left");
+        }
+
+        if (Phaser.Input.Keyboard.JustDown(spaceBar)) {
+            this.actionQueue.push("space");
+        }
+
+        
+        if (!this.transitioning && this.actionQueue.length > 0) {
+            let action = this.actionQueue.shift();
+            if (action == "space") {
+
+
+                var tileToCheckTop = topLayer.getTileAtWorldXY(playerShip.x, playerShip.y, true);
+                var tileToCheckBot = botLayer.getTileAtWorldXY(playerShip.x, playerShip.y, true);
+                console.log(tileToCheckTop.index);
+                console.log(tileToCheckBot.index);
+                        
+                
+                if (playerShip.currentFrame == 0)
+                {
+                    console.log("Color switched to yellow");
+                    //changes the frame of the spritesheet to blue
+                    playerShip.setFrame(1);
+                    playerShip.currentFrame = 1;
+                    this.circleOutline.setPosition(screenCenterX, 936);
+                } else if (playerShip.currentFrame == 1)
+                {
+                    console.log("Color switched to blue");
+                    //changes the frame of the spritesheet to blue
+                    playerShip.setFrame(2);
+                    playerShip.currentFrame = 2;
+                    this.circleOutline.setPosition(screenCenterX + (arrowDist/2), 935);
+                } else if(playerShip.currentFrame == 2)
+                {
+                    console.log("Color switched to red");
+                    //changes the frame of the spritesheet to blue
+                    playerShip.setFrame(0);
+                    playerShip.currentFrame = 0;
+                    this.circleOutline.setPosition(screenCenterX - (arrowDist/2), 935);
+                }
+            }
+
+            if(action == "right" && currentLane < 2){
+                this.transitioning = true;
+
+                this.add.tween({
+                    targets: playerShip,
+                    x : arrowMovementR,
+                    duration: 200,
+                    ease: 'Cubic',
+                    onComplete: ()=> this.transitioning = false,
+                })
+                currentLane ++;
+            }
+
+
+            //Tween movement to left lane with left arrow key
+            if(action == "left" && currentLane > 0){
+                this.transitioning = true;
+
+                this.add.tween({
+                    targets: playerShip,
+                    x : arrowMovementL,
+                    duration: 200,
+                    ease: 'Cubic',
+                    onComplete: ()=> this.transitioning = false,
+                })
+                currentLane --;
+            }
         }
 
         //getting the tile that the player is on every frame
@@ -164,19 +188,21 @@ class Play extends Phaser.Scene {
         //var color1 = tileToCheck.texture.getPixel(10,10);
         //console.log(color1);
 
-        function recenter(lane) {
-            switch(lane) {
-                case 0:
-                    playerShip.setPosition(screenCenterX - arrowDist, arrowY);
-                    break;
-                case 1:
-                    playerShip.setPosition(screenCenterX, arrowY);
-                    break;
-                case 2:
-                    playerShip.setPosition(screenCenterX + arrowDist, arrowY);
-            }
 
-        }
+        // //obsolite recenter code
+        // function recenter(lane) {
+        //     switch(lane) {
+        //         case 0:
+        //             playerShip.setPosition(screenCenterX - arrowDist, arrowY);
+        //             break;
+        //         case 1:
+        //             playerShip.setPosition(screenCenterX, arrowY);
+        //             break;
+        //         case 2:
+        //             playerShip.setPosition(screenCenterX + arrowDist, arrowY);
+        //     }
+
+        // }
     
         
         updateMap(travelDist, scrollSpeed);
