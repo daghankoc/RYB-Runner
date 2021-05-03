@@ -114,18 +114,24 @@ class Play extends Phaser.Scene {
             this.actionQueue.push("space");
         }
 
+        var tileToCheckTop = topLayer.getTileAtWorldXY(playerShip.x, playerShip.y, true);
+        var tileToCheckBot = botLayer.getTileAtWorldXY(playerShip.x, playerShip.y, true);
+        
+        
+        
+        // getting the tile under the player every frame
+        if(tileToCheckTop != null) {
+            console.log(tileToCheckTop.index);
+        }  else if(tileToCheckBot != null) {
+            console.log(tileToCheckBot.index);
+        }  
+         
+        
         
         if (!this.transitioning && this.actionQueue.length > 0) {
             let action = this.actionQueue.shift();
             if (action == "space") {
-
-
-                var tileToCheckTop = topLayer.getTileAtWorldXY(playerShip.x, playerShip.y, true);
-                var tileToCheckBot = botLayer.getTileAtWorldXY(playerShip.x, playerShip.y, true);
-                console.log(tileToCheckTop.index);
-                console.log(tileToCheckBot.index);
                         
-                
                 if (playerShip.currentFrame == 0)
                 {
                     console.log("Color switched to yellow");
