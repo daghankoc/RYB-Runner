@@ -256,5 +256,13 @@ class Play extends Phaser.Scene {
             map1dist += scrollSpeed;
             map2dist += scrollSpeed;
         }
+        function mapSpawner(curMap,mapToLoad){
+            
+            if(curMap.y > 970){
+                console.log("spawned new map");
+            }
+        
+        }
     }
+   
 }
