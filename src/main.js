@@ -23,8 +23,19 @@ let topLayer = null;
 const screenCenterY = game.config.height/2;
 const screenCenterX = game.config.width/2;
 
+//map movement variables
+let map1pos;
+let map2pos;
+const map1relative = ((8000 * tilemapScale) * -1);  //  -4800
+const map2relative = ((8000 * tilemapScale) * -2);  //  -9600
+let map1dist = 0;
+let map2dist = 0;
+let inOrder = true;
+
+
 //total distance traveled
 let travelDist = 0;
+let totalDist = 0;
 //scrolling rate (start)
 let scrollSpeed = 4;
 

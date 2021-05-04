@@ -20,10 +20,14 @@ class Play extends Phaser.Scene {
             frameHeight: 167,
             });
     }
+    
+    
     create() {
         
+        //declaring local variables
         this.transitioning = false;
         this.actionQueue = [];
+
 
         //Adding inputes to use
         spaceBar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
@@ -44,7 +48,7 @@ class Play extends Phaser.Scene {
 
         //background testing 2
         let map = this.add.tilemap('map');
-        let visuals = map.addTilesetImage('base', 'tiles');
+        let visuals = map.addTilesetImage('base', 'tiles'); //change "base" to "spritesheet" when we add the loading stuff update
         botLayer = map.createLayer('Tile Layer 1', [visuals], mapX, 0);
         topLayer = map.createLayer('Tile Layer 2', [visuals], mapX, 0);
         botLayer.scale = tilemapScale;
@@ -116,6 +120,8 @@ class Play extends Phaser.Scene {
 
         var tileToCheckTop = topLayer.getTileAtWorldXY(playerShip.x, playerShip.y, true);
         var tileToCheckBot = botLayer.getTileAtWorldXY(playerShip.x, playerShip.y, true);
+
+        //console.log(playerShip.x);
         
         
         
@@ -211,8 +217,7 @@ class Play extends Phaser.Scene {
         // }
     
         
-        updateMap(travelDist, scrollSpeed);
-
+        updateMap(travelDist, scrollSpeed); //old updateMap function, here for testing mostly...
 
         function updateMap(dist, speed) {
             let yPos =((8000 * tilemapScale) * -1) + dist;
@@ -226,6 +231,50 @@ class Play extends Phaser.Scene {
                 scrollSpeed += 1; //scrollSpeed values must be integers or else you get ghosting.
             }
             //console.log(travelDist);
+        }
+
+
+        //new move map function, needs two maps to work (4 layers)
+        //NOT TESTED YET
+        moveMap();
+
+        function moveMap() {
+            let map1current;
+            let map2current;
+            
+            if (inOrder) {
+                map1current = map1relative;// "relative" a constant used for spacing
+                map2current = map2relative;
+            } else {
+                map1current = map2relative; //switches who's on top
+                map2current = map1relative;
+            }
+
+            map1Pos = map1current + map1dist;
+            map2Pos = map2current + map1dist;
+
+            //detects if map needs resetting
+            if (Math.abs(map1Pos) >= 0 && Math.abs(map1Pos) <= 50) {
+                map2dist = 0;
+                inOrder = !inOrder;
+                //CALL FUNCTION THAT SWAPS MAPS HERE
+            }
+
+            if (Math.abs(map2Pos) >= 0 && Math.abs(map2Pos) <= 50) {
+                map1dist = 0 + map2Pos;
+                inOrder = !inOrder;
+                //CALL FUNCTION THAT SWAPS MAPS HERE
+            }
+
+
+            botLayer1.setPosition(mapX, map1Pos);
+            topLayer1.setPosition(mapX, map1Pos);
+            botLayer2.setPosition(mapX, map2Pos);
+            topLayer2.setPosition(mapX, map2Pos);
+
+            //step maps forward
+            map1dist += scrollSpeed;
+            map2dist += scrollSpeed;
         }
         
     }
