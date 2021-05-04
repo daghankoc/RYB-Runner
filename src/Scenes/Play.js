@@ -236,7 +236,7 @@ class Play extends Phaser.Scene {
 
         //new move map function, needs two maps to work (4 layers)
         //NOT TESTED YET
-        moveMap();
+        //moveMap();
 
         function moveMap() {
             let map1current;
