@@ -37,32 +37,20 @@ class Play extends Phaser.Scene {
         //setting the background color to dark grey
         this.cameras.main.setBackgroundColor('#fbfbe3');
         
-        //background testing
-        //const map = this.make.tilemap({key: 'map'});
-        //const tileset = map.addTilesetImage('base', 'tiles');
-        // const belowlayer = map.createLayer('Tile Layer 1', tileset, screenCenterX - (tilemapScale * 300), 50);
-        // const abovelayer = map.createLayer('Tile Layer 2', tileset, screenCenterX - (tilemapScale * 300), 50);
-        // abovelayer.scale = tilemapScale;
-        // belowlayer.scale = tilemapScale;
-        //console.log(belowlayer);
 
         //background testing 2
         let map = this.add.tilemap('map');
         let visuals = map.addTilesetImage('base', 'tiles'); //change "base" to "spritesheet" when we add the loading stuff update
         botLayer = map.createLayer('Tile Layer 1', [visuals], mapX, 0);
         topLayer = map.createLayer('Tile Layer 2', [visuals], mapX, 0);
+       
+        botLayer2 = map.createLayer('Tile Layer 1', [visuals], mapX, 0);
+        topLayer2 = map.createLayer('Tile Layer 2', [visuals], mapX, 0);
         botLayer.scale = tilemapScale;
         topLayer.scale = tilemapScale;
-
-        //current background
-        // this.map = this.add.tilemap('map');
-        // this.map.addTilesetImage('base', 'tiles');
-        // this.botLayer = this.map.createLayer('Tile Layer 1', this.map.tilesets, screenCenterX - (tilemapScale * 300), 0);
-        // this.topLayer = this.map.createLayer('Tile Layer 2', this.map.tilesets, screenCenterX - (tilemapScale * 300), 0);
-        // this.botLayer.scale = tilemapScale;
-        // this.topLayer.scale = tilemapScale;
-
-
+        botLayer2.scale = tilemapScale;
+        topLayer2.scale = tilemapScale;
+    
         // placing the assets
         playerShip = this.add.sprite(screenCenterX, arrowY, 'player').setOrigin(0.5,0.5);
         playerShip.scale = arrowScale;
@@ -77,7 +65,6 @@ class Play extends Phaser.Scene {
         //rendering the ship above the lane
         playerShip.setDepth('1');    
 
-        
         //creating a bottom UI bar for the color indicator
         this.circleOutline = this.add.sprite(screenCenterX - (arrowDist/2), 936, 'UI_circle_outline').setOrigin(0.5, 0.5);
         this.circleOutline.setDepth('2');
@@ -95,15 +82,9 @@ class Play extends Phaser.Scene {
         this.blueCircle.setTint("0x1181D9");
         this.blueCircle.setDepth('1');
 
-        
-        
  
     }
     update(){
-
-
-        
-        
 
         //Tween movement to right lane with right arrow key 
         if (Phaser.Input.Keyboard.JustDown(keyRight)) {
@@ -128,7 +109,7 @@ class Play extends Phaser.Scene {
         // getting the tile under the player every frame
         if(tileToCheckTop != null) {
             console.log(tileToCheckTop.index);
-        }  else if(tileToCheckBot != null) {
+        }  else if (tileToCheckBot != null) {
             console.log(tileToCheckBot.index);
         }  
          
@@ -213,7 +194,6 @@ class Play extends Phaser.Scene {
         //         case 2:
         //             playerShip.setPosition(screenCenterX + arrowDist, arrowY);
         //     }
-
         // }
     
         
@@ -276,7 +256,5 @@ class Play extends Phaser.Scene {
             map1dist += scrollSpeed;
             map2dist += scrollSpeed;
         }
-        
     }
-
 }

@@ -4,7 +4,7 @@ var config = {
     height: 960,
     margin: 0,
     
-    scene : Play,
+    scene : [Menu, Play],
     parent: 'phaser_canvas',
     //autoCenter: true,
 };
