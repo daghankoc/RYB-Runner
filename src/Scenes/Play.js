@@ -235,7 +235,7 @@ class Play extends Phaser.Scene {
 
             //detects if map needs resetting
             if (Math.abs(map1Pos) >= 0 && Math.abs(map1Pos) <= 50) {
-                map2dist = 0;
+                map2dist = 0 + map1Pos;
                 inOrder = !inOrder;
                 //CALL FUNCTION THAT SWAPS MAPS HERE
             }
