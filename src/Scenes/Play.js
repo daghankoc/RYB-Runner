@@ -9,6 +9,7 @@ class Play extends Phaser.Scene {
         //this.load.image('lane1', './assets/lane.png');
         this.load.image('tiles', './assets/rybSpriteSheet.png');
         this.load.tilemapTiledJSON('map', './maps/testmap_2.json');
+        this.load.tilemapTiledJSON('map1', './maps/map1.json');
 
         this.load.image('UI_circle','./assets/UI_circle.png');
         this.load.image('UI_circle_outline','./assets/UI_circle_outline.png');
@@ -39,17 +40,18 @@ class Play extends Phaser.Scene {
         
 
         //background testing 2
-        let map = this.add.tilemap('map');
-        let visuals = map.addTilesetImage('base', 'tiles'); //change "base" to "spritesheet" when we add the loading stuff update
+        map = this.add.tilemap('map');
+        visuals = map.addTilesetImage('base', 'tiles'); //change "base" to "spritesheet" when we add the loading stuff update
         botLayer = map.createLayer('Tile Layer 1', [visuals], mapX, 0);
         topLayer = map.createLayer('Tile Layer 2', [visuals], mapX, 0);
-       
-        botLayer2 = map.createLayer('Tile Layer 1', [visuals], mapX, 0);
-        topLayer2 = map.createLayer('Tile Layer 2', [visuals], mapX, 0);
+        mapToRemove = map;
+
+        //botLayer2 = map.createLayer('Tile Layer 1', [visuals], mapX, 0);
+       // topLayer2 = map.createLayer('Tile Layer 2', [visuals], mapX, 0);
         botLayer.scale = tilemapScale;
         topLayer.scale = tilemapScale;
-        botLayer2.scale = tilemapScale;
-        topLayer2.scale = tilemapScale;
+        //botLayer2.scale = tilemapScale;
+        //topLayer2.scale = tilemapScale;
     
         // placing the assets
         playerShip = this.add.sprite(screenCenterX, arrowY, 'player').setOrigin(0.5,0.5);
@@ -96,6 +98,7 @@ class Play extends Phaser.Scene {
         }
 
         if (Phaser.Input.Keyboard.JustDown(spaceBar)) {
+            mapSpawner(mapToRemove);
             this.actionQueue.push("space");
         }
 
@@ -108,9 +111,9 @@ class Play extends Phaser.Scene {
         
         // getting the tile under the player every frame
         if(tileToCheckTop != null) {
-            console.log(tileToCheckTop.index);
+            //console.log(tileToCheckTop.index);
         }  else if (tileToCheckBot != null) {
-            console.log(tileToCheckBot.index);
+            //console.log(tileToCheckBot.index);
         }  
          
         
@@ -256,12 +259,26 @@ class Play extends Phaser.Scene {
             map1dist += scrollSpeed;
             map2dist += scrollSpeed;
         }
-        function mapSpawner(curMap,mapToLoad){
-            
-            if(curMap.y > 970){
-                console.log("spawned new map");
-            }
-        
+
+        function mapSpawner(currentMap){
+            //map to change 
+            console.log(mapToRemove);
+            //creating a new map
+            newMap = mapToRemove.scene.make.tilemap("map1")
+            console.log(newMap);
+            //reomving map and adding the new map to the current map variable
+            //currentMap.remove();
+            mapToRemove = newMap;
+            visualsNew = newMap.addTilesetImage('base', 'tiles'); 
+            topLayerNew = newMap.createLayer(('Tile Layer 1', [visualsNew], mapX, 0));
+            botLayerNew = newMap.createLayer(('Tile Layer 2', [visualsNew], mapX, 0));
+            //botLayerNew.scale = tilemapScale;
+            //topLayerNew.scale = tilemapScale;
+            console.log(mapToRemove);
+            console.log(newMap);
+            //currentMap.removeAllLayers();
+
+
         }
     }
    
