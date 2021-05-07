@@ -35,7 +35,7 @@ class Play extends Phaser.Scene {
         keyLeft = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRight = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
 
-        //setting the background color to dark grey
+        //setting the background color to eggshell
         this.cameras.main.setBackgroundColor('#fbfbe3');
         
 
@@ -105,11 +105,24 @@ class Play extends Phaser.Scene {
         var tileToCheckTop = topLayer.getTileAtWorldXY(playerShip.x, playerShip.y, true);
         var tileToCheckBot = botLayer.getTileAtWorldXY(playerShip.x, playerShip.y, true);
 
+        
         function checkCollisions(topIndex, botIndex) {
             //decide relative x y of tile on sprite map based on index
             let tileOriginX = (Math.floor(topIndex % 5)) * 200; //finds the top left corner of the tile in question
             let tileOriginy = (Math.floor(topIndex / 5)) * 200;
+
             //determine ship location over tile
+            if (inOrder == true) {
+                let shipY = (Math.abs(map1Pos * (1 + tilemapScale))) % 200;
+            } else {
+                let shipY = (Math.abs(map2Pos * (1 + tilemapScale))) % 200;
+            }
+            console.log(shipY);
+
+            let shipX = ((playerShip.x - mapX) * (1 + tilemapScale)) % 200;
+            console.log(shipX);
+
+
             //get pixel color at location on spritesheet
             //compare do stuff with pixel color
                 //if topLayer is null (0, 0, 0) check bottom layer
