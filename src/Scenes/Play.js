@@ -105,15 +105,33 @@ class Play extends Phaser.Scene {
         var tileToCheckTop = topLayer.getTileAtWorldXY(playerShip.x, playerShip.y, true);
         var tileToCheckBot = botLayer.getTileAtWorldXY(playerShip.x, playerShip.y, true);
 
-        //console.log(playerShip.x);
-        
-        
-        
+        function checkCollisions(topIndex, botIndex) {
+            //decide relative x y of tile on sprite map based on index
+            let tileOriginX = (Math.floor(topIndex % 5)) * 200; //finds the top left corner of the tile in question
+            let tileOriginy = (Math.floor(topIndex / 5)) * 200;
+            //determine ship location over tile
+            //get pixel color at location on spritesheet
+            //compare do stuff with pixel color
+                //if topLayer is null (0, 0, 0) check bottom layer
+                    //if eggshell do nothing
+                    //if barrier crash
+                    //if red yellow or blue
+                        //compare color to current color 
+                        //if transition is fresh and color is same, do noting
+                        //if transition is fresh and color is different, crash (after certin ammount of time)
+                //set "has crashed" to true if crashed
+        }
+
+
         // getting the tile under the player every frame
         if(tileToCheckTop != null) {
             //console.log(tileToCheckTop.index);
+
+
         }  else if (tileToCheckBot != null) {
             //console.log(tileToCheckBot.index);
+
+
         }  
          
         
@@ -256,6 +274,7 @@ class Play extends Phaser.Scene {
             topLayer2.setPosition(mapX, map2Pos);
 
             //step maps forward
+            //if has crashed is false
             map1dist += scrollSpeed;
             map2dist += scrollSpeed;
         }
