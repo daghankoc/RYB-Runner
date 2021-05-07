@@ -264,21 +264,20 @@ class Play extends Phaser.Scene {
             //map to change 
             console.log(mapToRemove);
             //creating a new map
-            newMap = mapToRemove.scene.make.tilemap("map1")
+            newMap = mapToRemove.scene.make.tilemap("map")
             console.log(newMap);
             //reomving map and adding the new map to the current map variable
             //currentMap.remove();
             mapToRemove = newMap;
             visualsNew = newMap.addTilesetImage('base', 'tiles'); 
             topLayerNew = newMap.createLayer(('Tile Layer 1', [visualsNew], mapX, 0));
-            botLayerNew = newMap.createLayer(('Tile Layer 2', [visualsNew], mapX, 0));
+            console.log(topLayerNew);
+            botLayerNew = newMap.createLayer(('Tile Layer 2', [visualsNew], mapX, 1));
             //botLayerNew.scale = tilemapScale;
             //topLayerNew.scale = tilemapScale;
             console.log(mapToRemove);
             console.log(newMap);
             //currentMap.removeAllLayers();
-
-
         }
     }
    
