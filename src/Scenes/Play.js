@@ -257,21 +257,6 @@ class Play extends Phaser.Scene {
             }
             //console.log(travelDist);
         }
-<<<<<<< HEAD
-        //function mapSpawner(curMap,mapToLoad){
-        //    if(curMap.y > 970){
-                //console.log("spawned new map");
-        //    }
-    
-        //}
-        
-        //Transition to gameover scene
-        // if collision detected
-        // this.scene.start('gameoverScene');
-    }
-    
-=======
->>>>>>> 27ad56a8848e9f3b258518afcc06aec08b1fc2fb
 
 
         //new move map function, needs two maps to work (4 layers)
