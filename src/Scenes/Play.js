@@ -187,6 +187,9 @@ class Play extends Phaser.Scene {
     
         //}
         
+        //Transition to gameover scene
+        // if collision detected
+        // this.scene.start('gameoverScene');
     }
     
 
