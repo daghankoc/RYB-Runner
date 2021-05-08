@@ -9,6 +9,14 @@ class Play extends Phaser.Scene {
         //this.load.image('lane1', './assets/lane.png');
         this.load.image('tiles', './assets/rybSpriteSheet.png');
         this.load.tilemapTiledJSON('map', './maps/testmap_2.json');
+        this.load.tilemapTiledJSON('map1', './maps/map1.json');
+
+        //switch this audio file to sound effect that plays when you move
+        this.load.audio('move_sfx', './assets/testSound.wav')
+        //switch this audio file to sound effect that plays when you cycle colors
+        this.load.audio('cycle_sfx', './assets/testSound.wav')
+        //switch this audio file to change background music
+        this.load.audio('music_sfx', './assets/testMusic.mp3')
 
         this.load.image('UI_circle','./assets/UI_circle.png');
         this.load.image('UI_circle_outline','./assets/UI_circle_outline.png');
@@ -20,32 +28,38 @@ class Play extends Phaser.Scene {
             frameHeight: 167,
             });
     }
+    
+    
     create() {
-        
+        this.sound.play('music_sfx');
+
+        //declaring local variables
         this.transitioning = false;
         this.actionQueue = [];
+
 
         //Adding inputes to use
         spaceBar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
         keyLeft = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRight = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
 
-        //setting the background color to dark grey
+        //setting the background color to eggshell
         this.cameras.main.setBackgroundColor('#fbfbe3');
         
 
         //background testing 2
-        let map = this.add.tilemap('map');
-        let visuals = map.addTilesetImage('base', 'tiles');
+        map = this.add.tilemap('map');
+        visuals = map.addTilesetImage('base', 'tiles'); //change "base" to "spritesheet" when we add the loading stuff update
         botLayer = map.createLayer('Tile Layer 1', [visuals], mapX, 0);
         topLayer = map.createLayer('Tile Layer 2', [visuals], mapX, 0);
-       
-        botLayer2 = map.createLayer('Tile Layer 1', [visuals], mapX, 0);
-        topLayer2 = map.createLayer('Tile Layer 2', [visuals], mapX, 0);
+        mapToRemove = map;
+
+        //botLayer2 = map.createLayer('Tile Layer 1', [visuals], mapX, 0);
+       // topLayer2 = map.createLayer('Tile Layer 2', [visuals], mapX, 0);
         botLayer.scale = tilemapScale;
         topLayer.scale = tilemapScale;
-        botLayer2.scale = tilemapScale;
-        topLayer2.scale = tilemapScale;
+        //botLayer2.scale = tilemapScale;
+        //topLayer2.scale = tilemapScale;
     
         // placing the assets
         playerShip = this.add.sprite(screenCenterX, arrowY, 'player').setOrigin(0.5,0.5);
@@ -85,26 +99,63 @@ class Play extends Phaser.Scene {
         //Tween movement to right lane with right arrow key 
         if (Phaser.Input.Keyboard.JustDown(keyRight)) {
             this.actionQueue.push("right");
+            this.sound.play('move_sfx');
         }
 
         if (Phaser.Input.Keyboard.JustDown(keyLeft)) {
             this.actionQueue.push("left");
+            this.sound.play('move_sfx')
         }
 
         if (Phaser.Input.Keyboard.JustDown(spaceBar)) {
+            mapSpawner(mapToRemove);
             this.actionQueue.push("space");
+            this.sound.play('cycle_sfx')
         }
 
         var tileToCheckTop = topLayer.getTileAtWorldXY(playerShip.x, playerShip.y, true);
         var tileToCheckBot = botLayer.getTileAtWorldXY(playerShip.x, playerShip.y, true);
+
         
-        
-        
+        function checkCollisions(topIndex, botIndex) {
+            //decide relative x y of tile on sprite map based on index
+            let tileOriginX = (Math.floor(topIndex % 5)) * 200; //finds the top left corner of the tile in question
+            let tileOriginy = (Math.floor(topIndex / 5)) * 200;
+
+            //determine ship location over tile
+            if (inOrder == true) {
+                let shipY = (Math.abs(map1Pos * (1 + tilemapScale))) % 200;
+            } else {
+                let shipY = (Math.abs(map2Pos * (1 + tilemapScale))) % 200;
+            }
+            console.log(shipY);
+
+            let shipX = ((playerShip.x - mapX) * (1 + tilemapScale)) % 200;
+            console.log(shipX);
+
+
+            //get pixel color at location on spritesheet
+            //compare do stuff with pixel color
+                //if topLayer is null (0, 0, 0) check bottom layer
+                    //if eggshell do nothing
+                    //if barrier crash
+                    //if red yellow or blue
+                        //compare color to current color 
+                        //if transition is fresh and color is same, do noting
+                        //if transition is fresh and color is different, crash (after certin ammount of time)
+                //set "has crashed" to true if crashed
+        }
+
+
         // getting the tile under the player every frame
         if(tileToCheckTop != null) {
-            console.log(tileToCheckTop.index);
+            //console.log(tileToCheckTop.index);
+
+
         }  else if (tileToCheckBot != null) {
-            console.log(tileToCheckBot.index);
+            //console.log(tileToCheckBot.index);
+
+
         }  
          
         
@@ -165,7 +216,33 @@ class Play extends Phaser.Scene {
                 currentLane --;
             }
         }
-        updateMap(travelDist, scrollSpeed);
+
+        //getting the tile that the player is on every frame
+        //var tileToCheckTop = topLayer.getTileAtWorldXY(playerShip.x, playerShip.y, true);
+        //var tileToCheckTop = botLayer.getTileAtWorldXY(playerShip.x, playerShip.y, true);
+        
+        //console.log(tileToCheckTop.index);
+        
+        //var color1 = tileToCheck.texture.getPixel(10,10);
+        //console.log(color1);
+
+
+        // //obsolite recenter code
+        // function recenter(lane) {
+        //     switch(lane) {
+        //         case 0:
+        //             playerShip.setPosition(screenCenterX - arrowDist, arrowY);
+        //             break;
+        //         case 1:
+        //             playerShip.setPosition(screenCenterX, arrowY);
+        //             break;
+        //         case 2:
+        //             playerShip.setPosition(screenCenterX + arrowDist, arrowY);
+        //     }
+        // }
+    
+        
+        updateMap(travelDist, scrollSpeed); //old updateMap function, here for testing mostly...
 
         function updateMap(dist, speed) {
             let yPos =((8000 * tilemapScale) * -1) + dist;
@@ -180,6 +257,7 @@ class Play extends Phaser.Scene {
             }
             //console.log(travelDist);
         }
+<<<<<<< HEAD
         //function mapSpawner(curMap,mapToLoad){
         //    if(curMap.y > 970){
                 //console.log("spawned new map");
@@ -192,5 +270,73 @@ class Play extends Phaser.Scene {
         // this.scene.start('gameoverScene');
     }
     
+=======
+>>>>>>> 27ad56a8848e9f3b258518afcc06aec08b1fc2fb
 
+
+        //new move map function, needs two maps to work (4 layers)
+        //NOT TESTED YET
+        //moveMap();
+
+        function moveMap() {
+            let map1current;
+            let map2current;
+            
+            if (inOrder) {
+                map1current = map1relative;// "relative" a constant used for spacing
+                map2current = map2relative;
+            } else {
+                map1current = map2relative; //switches who's on top
+                map2current = map1relative;
+            }
+
+            map1Pos = map1current + map1dist;
+            map2Pos = map2current + map1dist;
+
+            //detects if map needs resetting
+            if (Math.abs(map1Pos) >= 0 && Math.abs(map1Pos) <= 50) {
+                map2dist = 0 + map1Pos;
+                inOrder = !inOrder;
+                //CALL FUNCTION THAT SWAPS MAPS HERE
+            }
+
+            if (Math.abs(map2Pos) >= 0 && Math.abs(map2Pos) <= 50) {
+                map1dist = 0 + map2Pos;
+                inOrder = !inOrder;
+                //CALL FUNCTION THAT SWAPS MAPS HERE
+            }
+
+
+            botLayer1.setPosition(mapX, map1Pos);
+            topLayer1.setPosition(mapX, map1Pos);
+            botLayer2.setPosition(mapX, map2Pos);
+            topLayer2.setPosition(mapX, map2Pos);
+
+            //step maps forward
+            //if has crashed is false
+            map1dist += scrollSpeed;
+            map2dist += scrollSpeed;
+        }
+
+        function mapSpawner(currentMap){
+            //map to change 
+            console.log(mapToRemove);
+            //creating a new map
+            newMap = mapToRemove.scene.make.tilemap("map")
+            console.log(newMap);
+            //reomving map and adding the new map to the current map variable
+            //currentMap.remove();
+            mapToRemove = newMap;
+            visualsNew = newMap.addTilesetImage('base', 'tiles'); 
+            topLayerNew = newMap.createLayer(('Tile Layer 1', [visualsNew], mapX, 0));
+            console.log(topLayerNew);
+            botLayerNew = newMap.createLayer(('Tile Layer 2', [visualsNew], mapX, 1));
+            //botLayerNew.scale = tilemapScale;
+            //topLayerNew.scale = tilemapScale;
+            console.log(mapToRemove);
+            console.log(newMap);
+            //currentMap.removeAllLayers();
+        }
+    }
+   
 }

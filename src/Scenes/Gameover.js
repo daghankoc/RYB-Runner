@@ -1,12 +1,11 @@
-class Menu extends Phaser.Scene {
+class Gameover extends Phaser.Scene{
     constructor(){
-        super("menuScene");
+        super("gameoverScene");
     }
-    
+
     preload(){
         this.load.image('ryb_logo', './assets/RYB_logo_linear.png');
     }
-
     create(){
         let menuConfig = {
             fontFamily: 'Quicksand',
@@ -20,19 +19,13 @@ class Menu extends Phaser.Scene {
             },
             fixedWidth: 0
         }
+        this.add.image(325, 250, 'ryb_logo'); 
+        this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', menuConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2 , game.config.height/1.8, 'Score: ', menuConfig).setOrigin(0.5);
+        //needs score variable
+    }
+    update(){
 
-        this.cameras.main.setBackgroundColor('#fbfbe3');
-
-        this.add.image(325, 250, 'ryb_logo');
-        const startButton = this.add.text(game.config.width/2, game.config.height/2, 'START', menuConfig).setOrigin(0.5)
-        .setInteractive()
-        .on('pointerdown', () => this.scene.start("playScene"));
-        
-        
     }
     
-    update(){
-        
-    }
-
 }

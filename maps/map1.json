@@ -35,11 +35,11 @@
  "tilesets":[
         {
          "firstgid":1,
-         "source":"rybSpriteSheet.tsx"
+         "source":"..\/RYB_assets\/rybSpriteSheet.png"
         }, 
         {
          "firstgid":31,
-         "source":"spritesheet.tsx"
+         "source":"..\/RYB_assets\/rybSpriteSheet.png"
         }],
  "tilewidth":200,
  "type":"map",
