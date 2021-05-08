@@ -20,17 +20,26 @@ class Menu extends Phaser.Scene {
             },
             fixedWidth: 0
         }
-
-        this.cameras.main.setBackgroundColor('#fbfbe3');
-
-        this.add.image(325, 250, 'ryb_logo');
-        const startButton = this.add.text(game.config.width/2, game.config.height/2, 'START', menuConfig).setOrigin(0.5)
-        .setInteractive()
-        .on('pointerdown', () => this.scene.start("playScene"));
+        this.ryb = this.add.image(325, 250, 'ryb_logo');
+        //const startButton = this.add.text(game.config.width/2, game.config.height/2, 'START', menuConfig).setOrigin(0.5)
+        //.setInteractive()
+        // .on('pointerdown', () => this.scene.start("playScene"));
         
+        this.startButton = this.add.text(game.config.width/2, game.config.height/2, 'START', menuConfig).setOrigin(0.5)
+        .setInteractive()
+        .on('pointerdown', () => 
+            this.tweens.add({
+                targets: [this.ryb, this.startButton],
+                x: -250,
+                duration: 2000,
+                ease: 'Cubic',
+                onComplete: ()=> this.scene.start('playScene'),
+            })
+        //this.scene.start("playScene")
+        );
+
         
     }
-    
     update(){
         
     }
