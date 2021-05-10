@@ -66,7 +66,7 @@ class Play extends Phaser.Scene {
     
     create() {
         //setting the background color to eggshell
-        this.cameras.main.setBackgroundColor('#fbfbe3');
+        //this.cameras.main.setBackgroundColor('#fbfbe3');
 
         this.sound.play('music_sfx');
 
@@ -83,33 +83,12 @@ class Play extends Phaser.Scene {
         keyRight = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
         keyPause = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
 
-<<<<<<< HEAD
-        //setting the background color to eggshell
-        //this.cameras.main.setBackgroundColor('#fbfbe3');
-        
         this.cameras.main.setAlpha(0);
         this.add.tween({
             targets: this.cameras.main,
             alpha: 1,
             duration: 1000,
         });
-        
-        
-        //background testing 2
-        map = this.add.tilemap('map');
-        visuals = map.addTilesetImage('base', 'tiles'); //change "base" to "spritesheet" when we add the loading stuff update
-        botLayer = map.createLayer('Tile Layer 1', [visuals], mapX, 0);
-        topLayer = map.createLayer('Tile Layer 2', [visuals], mapX, 0);
-        mapToRemove = map;
-
-        //botLayer2 = map.createLayer('Tile Layer 1', [visuals], mapX, 0);
-       // topLayer2 = map.createLayer('Tile Layer 2', [visuals], mapX, 0);
-        botLayer.scale = tilemapScale;
-        topLayer.scale = tilemapScale;
-        //botLayer2.scale = tilemapScale;
-        //topLayer2.scale = tilemapScale;
-=======
-        
 
         //map1 initialization
         map1 = this.add.tilemap('hard2');
@@ -138,7 +117,6 @@ class Play extends Phaser.Scene {
 
         // botLayer.scale = tilemapScale;
         // topLayer.scale = tilemapScale;
->>>>>>> 962e161c157089b28dee08cb3bc05559f20b1223
     
         // placing arrow asset
         playerShip = this.add.sprite(screenCenterX, arrowY, 'player').setOrigin(0.5,0.5);
