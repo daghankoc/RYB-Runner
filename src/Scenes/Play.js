@@ -176,7 +176,7 @@ class Play extends Phaser.Scene {
         if (!this.transitioning && this.actionQueue.length > 0) {
             let action = this.actionQueue.shift();
             if (action == "space") {
-                mapSpawner();
+                //mapSpawner();
                 if (playerShip.currentFrame == 0)
                 {
                     console.log("Color switched to yellow");
