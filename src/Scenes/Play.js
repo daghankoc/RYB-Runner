@@ -11,6 +11,13 @@ class Play extends Phaser.Scene {
         this.load.tilemapTiledJSON('map', './maps/testmap_2.json');
         this.load.tilemapTiledJSON('map1', './maps/map1.json');
 
+        //switch this audio file to sound effect that plays when you move
+        this.load.audio('move_sfx', './assets/testSound.wav')
+        //switch this audio file to sound effect that plays when you cycle colors
+        this.load.audio('cycle_sfx', './assets/testSound.wav')
+        //switch this audio file to change background music
+        this.load.audio('music_sfx', './assets/testMusic.mp3')
+
         this.load.image('UI_circle','./assets/UI_circle.png');
         this.load.image('UI_circle_outline','./assets/UI_circle_outline.png');
     
@@ -24,7 +31,8 @@ class Play extends Phaser.Scene {
     
     
     create() {
-        
+        this.sound.play('music_sfx');
+
         //declaring local variables
         this.transitioning = false;
         this.actionQueue = [];
@@ -91,15 +99,18 @@ class Play extends Phaser.Scene {
         //Tween movement to right lane with right arrow key 
         if (Phaser.Input.Keyboard.JustDown(keyRight)) {
             this.actionQueue.push("right");
+            this.sound.play('move_sfx');
         }
 
         if (Phaser.Input.Keyboard.JustDown(keyLeft)) {
             this.actionQueue.push("left");
+            this.sound.play('move_sfx')
         }
 
         if (Phaser.Input.Keyboard.JustDown(spaceBar)) {
             mapSpawner(mapToRemove);
             this.actionQueue.push("space");
+            this.sound.play('cycle_sfx')
         }
 
         var tileToCheckTop = topLayer.getTileAtWorldXY(playerShip.x, playerShip.y, true);

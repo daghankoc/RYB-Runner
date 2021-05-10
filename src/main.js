@@ -3,8 +3,8 @@ var config = {
     width: 640,
     height: 960,
     margin: 0,
-    
-    scene : [Menu, Play],
+    transparent: true,
+    scene : [Menu, Play, Gameover],
     parent: 'phaser_canvas',
     //autoCenter: true,
 };
