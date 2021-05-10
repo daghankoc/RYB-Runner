@@ -108,7 +108,7 @@ class Play extends Phaser.Scene {
         // visuals = map.addTilesetImage('base', 'tiles'); //change "base" to "spritesheet" when we add the loading stuff update
         // botLayer = map.createLayer('Tile Layer 1', [visuals], mapX, 0);
         // topLayer = map.createLayer('Tile Layer 2', [visuals], mapX, 0);
-        // mapToRemove = map;
+        mapToRemove = map1;
 
         // botLayer.scale = tilemapScale;
         // topLayer.scale = tilemapScale;
@@ -176,7 +176,7 @@ class Play extends Phaser.Scene {
         if (!this.transitioning && this.actionQueue.length > 0) {
             let action = this.actionQueue.shift();
             if (action == "space") {
-                        
+                mapSpawner();
                 if (playerShip.currentFrame == 0)
                 {
                     console.log("Color switched to yellow");
@@ -322,20 +322,21 @@ class Play extends Phaser.Scene {
         }
 
         function mapSpawner(currentMap){
-            //map to change 
-            console.log(mapToRemove);
-            //creating a new map
-            newMap = mapToRemove.scene.make.tilemap("map")
-            console.log(newMap);
-            //reomving map and adding the new map to the current map variable
-            //currentMap.remove();
-            mapToRemove = newMap;
-            visualsNew = newMap.addTilesetImage('base', 'tiles'); 
-            topLayerNew = newMap.createLayer(('Tile Layer 1', [visualsNew], mapX, 0));
+
+            if(travelDist <= 100){
+                newMap = map1.scene.make.tilemap("hard2")
+            } else if (travelDist > 100){
+                newMap = map1.scene.make.tilemap("hard2")
+            }
+            //using current map to create a new one 
+            visualsNew = newMap.addTilesetImage('spritesheet', 'tiles'); 
+            topLayerNew = newMap.createLayer(('Tile Layer 1', [visualsNew], mapX, map1relative));
+            botLayerNew = newMap.createLayer(('Tile Layer 2', [visualsNew], mapX, map1relative));
+            botLayerNew.scale = tilemapScale;
+            topLayerNew.scale = tilemapScale;
+            //currentMap = newMap;
             console.log(topLayerNew);
-            botLayerNew = newMap.createLayer(('Tile Layer 2', [visualsNew], mapX, 1));
-            //botLayerNew.scale = tilemapScale;
-            //topLayerNew.scale = tilemapScale;
+            console.log(botLayerNew);
             console.log(mapToRemove);
             console.log(newMap);
             //currentMap.removeAllLayers();
