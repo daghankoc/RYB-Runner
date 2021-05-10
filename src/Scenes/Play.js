@@ -105,7 +105,7 @@ class Play extends Phaser.Scene {
         var tileToCheckTop = topLayer.getTileAtWorldXY(playerShip.x, playerShip.y, true);
         var tileToCheckBot = botLayer.getTileAtWorldXY(playerShip.x, playerShip.y, true);
 
-        
+
         function checkCollisions(topIndex, botIndex) {
             //decide relative x y of tile on sprite map based on index
             let tileOriginX = (Math.floor(topIndex % 5)) * 200; //finds the top left corner of the tile in question
@@ -257,15 +257,15 @@ class Play extends Phaser.Scene {
             let map2current;
             
             if (inOrder) {
-                map1current = map1relative;// "relative" a constant used for spacing
+                map1current = map1relative;// "relative" a constant used for spacing (based on map scale, defined in main.js)
                 map2current = map2relative;
             } else {
                 map1current = map2relative; //switches who's on top
                 map2current = map1relative;
             }
 
-            map1Pos = map1current + map1dist;
-            map2Pos = map2current + map1dist;
+            map1Pos = map1current + map1dist; //adds the spacing constant to the apropriate map (based on logic above) 
+            map2Pos = map2current + map1dist; //also adds "map1dist" which is the counter.
 
             //detects if map needs resetting
             if (Math.abs(map1Pos) >= 0 && Math.abs(map1Pos) <= 50) {
