@@ -11,7 +11,7 @@ class Menu extends Phaser.Scene {
         let menuConfig = {
             fontFamily: 'Quicksand',
             fontSize: '28px',
-            backgroundColor: '#AEB6BF',
+            //backgroundColor: '#AEB6BF',
             color: '#000',
             align: 'right',
             padding: {
@@ -25,18 +25,18 @@ class Menu extends Phaser.Scene {
         //.setInteractive()
         // .on('pointerdown', () => this.scene.start("playScene"));
         
-        this.startButton = this.add.text(game.config.width/2, game.config.height/2, 'START', menuConfig).setOrigin(0.5)
+        this.startButton = this.add.text(game.config.width/2, game.config.height/1.2, 'START', menuConfig).setOrigin(0.5)
         .setInteractive()
-        .on('pointerdown', () => 
+        .on('pointerdown', () => {
             this.tweens.add({
                 targets: [this.ryb, this.startButton],
                 x: -250,
                 duration: 2000,
                 ease: 'Cubic',
-                onComplete: ()=> this.scene.start('playScene'),
-            })
-        //this.scene.start("playScene")
-        );
+                onComplete: ()=> this.scene.stop('menuScene'),
+            });
+            this.scene.launch('playScene')
+        });
 
         
     }

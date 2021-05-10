@@ -44,9 +44,16 @@ class Play extends Phaser.Scene {
         keyRight = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
 
         //setting the background color to eggshell
-        this.cameras.main.setBackgroundColor('#fbfbe3');
+        //this.cameras.main.setBackgroundColor('#fbfbe3');
         
-
+        this.cameras.main.setAlpha(0);
+        this.add.tween({
+            targets: this.cameras.main,
+            alpha: 1,
+            duration: 1000,
+        });
+        
+        
         //background testing 2
         map = this.add.tilemap('map');
         visuals = map.addTilesetImage('base', 'tiles'); //change "base" to "spritesheet" when we add the loading stuff update
