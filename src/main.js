@@ -67,9 +67,28 @@ let inOrder = true;
 let travelDist = 0;
 let rawDist = 0;
 //scrolling rate (start)
-let scrollSpeed = 4;
+let scrollSpeed = 8;
 
 //current lane of the player to restrict its movement
 let currentLane = 1;
 
-let difficulty;
+
+//data structures for maps
+
+//map name arrays, must be updated when new maps are added
+let mapsEasy = ['easy1', 'easy2', 'easy3'];
+let mapsMid = ['mid1', 'mid2', 'mid3', 'mid4'];
+let mapsHard = ['hard1', 'hard2', 'hard3', 'hard4', 'hard5', 'hard6', 'hard7'];
+
+function createMapOrder() {
+    //future function that defines a random map order for each game, but still conforms to tutorial and difficulty.
+    return mapsEasy.concat(mapsMid, mapsHard); //currently puts maps in order.
+}
+
+let mapNames = createMapOrder(); //populate map names order
+let mapData = [];
+let nextMap = 2; //counter used to index through mapNames array, change to start on a particular map (after maps 1 and 2 pass) (DEFUALT IS 2)
+
+if (nextMap >= mapNames.length) { //puts you on the last map even if next map is set to a number greater than the number of maps loaded.
+    nextMap = mapNames.length - 1;
+}

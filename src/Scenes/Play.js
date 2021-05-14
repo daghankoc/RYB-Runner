@@ -90,21 +90,36 @@ class Play extends Phaser.Scene {
             duration: 1000,
         });
 
-        //map1 initialization
-        map1 = this.add.tilemap('hard2');
+        //mapData array initialization, based on mapNames order
+        for (let i = 0; i < mapNames.length; i++) {
+            mapData.push(this.add.tilemap(mapNames[i]))
+        }
+        //console.log(mapData);
+        
+        //map1 intialization
+        //map1 = this.add.tilemap('hard2');
+        map1 = mapData[0];
         visuals1 = map1.addTilesetImage('spritesheet', 'tiles'); //change "base" to "spritesheet" when we add the loading stuff update
         botLayer1 = map1.createLayer('Tile Layer 1', [visuals1], mapX, map1relative);
         topLayer1 = map1.createLayer('Tile Layer 2', [visuals1], mapX, map1relative);
         botLayer1.scale = tilemapScale;
         topLayer1.scale = tilemapScale;
 
+        // nextMap++; //incraments the map counter
+        // if (nextMap >= mapNames.length) {
+        //     nextMap = 8;
+        // }
+
         //map2 initialization
-        map2 = this.add.tilemap('hard3');
+        //map2 = this.add.tilemap('hard3');
+        map2 = mapData[1];
         visuals2 = map2.addTilesetImage('spritesheet', 'tiles'); //change "base" to "spritesheet" when we add the loading stuff update
         botLayer2 = map2.createLayer('Tile Layer 1', [visuals2], mapX, map2relative);
         topLayer2 = map2.createLayer('Tile Layer 2', [visuals2], mapX, map2relative);
         botLayer2.scale = tilemapScale;
         topLayer2.scale = tilemapScale;
+
+        
 
 
 
@@ -181,7 +196,6 @@ class Play extends Phaser.Scene {
         if (!this.transitioning && this.actionQueue.length > 0) {
             let action = this.actionQueue.shift();
             if (action == "space") {
-                //mapSpawner();
                 if (playerShip.currentFrame == 0)
                 {
                     console.log("Color switched to yellow");
@@ -246,9 +260,15 @@ class Play extends Phaser.Scene {
 
     
 
-        let tileToCheckTop = topLayer1.getTileAtWorldXY(playerShip.x, playerShip.y, true);
-        let tileToCheckBot = botLayer1.getTileAtWorldXY(playerShip.x, playerShip.y, true);
-        //console.log(tileToCheckTop); Passes entire object...
+        let tileToCheckTop1 = topLayer1.getTileAtWorldXY(playerShip.x, playerShip.y, true);
+        let tileToCheckBot1 = botLayer1.getTileAtWorldXY(playerShip.x, playerShip.y, true);
+        let tileToCheckTop2 = topLayer2.getTileAtWorldXY(playerShip.x, playerShip.y, true);
+        let tileToCheckBot2 = botLayer2.getTileAtWorldXY(playerShip.x, playerShip.y, true);
+
+        if (tileToCheckBot1 !== null) {
+            //console.log(tileToCheckBot1.index);
+        }
+         //Passes entire object...
 
 
         function indexToTileOrigin(index) {
@@ -257,17 +277,21 @@ class Play extends Phaser.Scene {
             return([originX, originY]);
         }
 
-        //checkCollisions(tileToCheckTop, tileToCheckBot);
+        //let color = this.textures.getPixel(playerShip.x, playerShip.y, 'tiles');
+        checkCollisions(tileToCheckTop1, tileToCheckBot1);
+        
 
         function checkCollisions(topIndex, botIndex) {
             let tileY = 0;
             
             //determine ship location over tileMap and then converts to tileY
-            if (botLayer1.y <= (map1relative + arrowY) && botLayer1.y > arrowY) {
-                tileY = ((botLayer1.y / tilemapScale) + arrowHeight)% 200;
+            if (map1Pos <= (map1relative + arrowY) && map1Pos < arrowY) {
+                tileY = ((map1Pos / tilemapScale) + arrowHeight)% 200;
+                tileY = Math.abs(Math.floor(tileY));
             }
-            if (botLayer2.y <= (map1relative + arrowY) && botLayer2.y > arrowY) {
-                tileY = ((botLayer2.y / tilemapScale) + arrowHeight)% 200;
+            if (map2Pos <= (map1relative + arrowY) && map2Pos < arrowY) {
+                tileY = ((map2Pos / tilemapScale) + arrowHeight)% 200;
+                tileY = Math.abs(Math.floor(tileY));
             }
             //if (tileY = -1)
             
@@ -276,9 +300,13 @@ class Play extends Phaser.Scene {
             let tileX = Math.floor(shipX) % 200
 
 
+            //console.log(tileX, tileY);
+
             //get pixel color at location on spritesheet
-            let color = this.textures.getPixel(tileX, tileY, 'tiles2');
-            console.log(color);
+            // let color = game.scene.getScenes()[0].textures.getPixel(tileX, tileY, 'tiles');
+            //     console.log(color);
+            
+            
 
             //compare do stuff with pixel color
                 //if topLayer is null (0, 0, 0) check bottom layer
@@ -304,15 +332,26 @@ class Play extends Phaser.Scene {
 
             if (map1Pos > game.config.height + 50) {
                 map1dist = (map2dist + map1relative);
-                scrollSpeed++
-                //CALL FUNCTION THAT SWAPS MAPS HERE
+                //scrollSpeed++
+                if (nextMap >= mapNames.length) {
+                    nextMap = 8;
+                }
+                swapMap1(nextMap);
+                nextMap++;
+                console.log(nextMap)
             }
 
             if (map2Pos > game.config.height + 50) {
                 map2dist = (map1dist + map1relative);
-                scrollSpeed++
-                //CALL FUNCTION THAT SWAPS MAPS HERE
+                //scrollSpeed++
+                if (nextMap >= mapNames.length) {
+                    nextMap = 8;
+                }
+                swapMap2(nextMap)
+                nextMap++
+                console.log(nextMap)
             }
+        
 
             botLayer1.setPosition(mapX, map1Pos);
             topLayer1.setPosition(mapX, map1Pos);
@@ -326,25 +365,46 @@ class Play extends Phaser.Scene {
             rawDist++;
         }
 
-        function mapSpawner(currentMap){
 
-            if(travelDist <= 100){
-                newMap = map1.scene.make.tilemap("hard2")
-            } else if (travelDist > 100){
-                newMap = map1.scene.make.tilemap("hard2")
-            }
-            //using current map to create a new one 
-            visualsNew = newMap.addTilesetImage('spritesheet', 'tiles'); 
-            topLayerNew = newMap.createLayer(('Tile Layer 1', [visualsNew], mapX, map1relative));
-            botLayerNew = newMap.createLayer(('Tile Layer 2', [visualsNew], mapX, map1relative));
-            botLayerNew.scale = tilemapScale;
-            topLayerNew.scale = tilemapScale;
-            //currentMap = newMap;
-            console.log(topLayerNew);
-            console.log(botLayerNew);
-            console.log(mapToRemove);
-            console.log(newMap);
-            //currentMap.removeAllLayers();
+        //swap map functions, uses mapData array which is constructed in the create method.
+        function swapMap1(index) {
+            map1 = mapData[index];
+            visuals1 = map1.addTilesetImage('spritesheet', 'tiles');
+            botLayer1 = map1.createLayer('Tile Layer 1', [visuals1], mapX, map1relative);
+            topLayer1 = map1.createLayer('Tile Layer 2', [visuals1], mapX, map1relative);
+            botLayer1.scale = tilemapScale;
+            topLayer1.scale = tilemapScale;
         }
+
+        function swapMap2(index) {
+            map2 = mapData[index];
+            visuals2 = map2.addTilesetImage('spritesheet', 'tiles');
+            botLayer2 = map2.createLayer('Tile Layer 1', [visuals2], mapX, map2relative);
+            topLayer2 = map2.createLayer('Tile Layer 2', [visuals2], mapX, map2relative);
+            botLayer2.scale = tilemapScale;
+            topLayer2.scale = tilemapScale;
+        }
+
+
+        // function mapSpawner(currentMap){
+
+        //     if(travelDist <= 100){
+        //         newMap = map1.scene.make.tilemap("hard2")
+        //     } else if (travelDist > 100){
+        //         newMap = map1.scene.make.tilemap("hard2")
+        //     }
+        //     //using current map to create a new one 
+        //     visualsNew = newMap.addTilesetImage('spritesheet', 'tiles'); 
+        //     topLayerNew = newMap.createLayer(('Tile Layer 1', [visualsNew], mapX, map1relative));
+        //     botLayerNew = newMap.createLayer(('Tile Layer 2', [visualsNew], mapX, map1relative));
+        //     botLayerNew.scale = tilemapScale;
+        //     topLayerNew.scale = tilemapScale;
+        //     //currentMap = newMap;
+        //     console.log(topLayerNew);
+        //     console.log(botLayerNew);
+        //     console.log(mapToRemove);
+        //     console.log(newMap);
+        //     //currentMap.removeAllLayers();
+        //}
     }
 }
