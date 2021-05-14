@@ -165,6 +165,7 @@ class Play extends Phaser.Scene {
 
  
     }
+
     update(){
 
         // let shipX = ((playerShip.x - mapX) / tilemapScale);
@@ -249,161 +250,152 @@ class Play extends Phaser.Scene {
             }
         }
 
-        //getting the tile that the player is on every frame
-        
-        function getTilemapRGB() {
-            let tileY = 0;
-            let tileX = 0;
-            let selectedIndex = -1;
-            let tileToCheckTop
-            let tileToCheckBot
-            let spriteSheetXY
-            
-            //determine ship location (y) over tileMap and then converts to tileY
-            //also gather tile data
-
-            if (Math.abs(map1Pos) <= (Math.abs(map1relative + arrowY)) && map1Pos < arrowY) {
-                tileY = ((map1Pos / tilemapScale) + arrowHeight)% 200;
-                tileY = Math.abs(Math.floor(tileY));
-
-                tileToCheckTop = topLayer1.getTileAtWorldXY(playerShip.x, playerShip.y, true);
-                tileToCheckBot = botLayer1.getTileAtWorldXY(playerShip.x, playerShip.y, true);
-                //console.log('map1');
-            }
-            if (Math.abs(map2Pos) <= (Math.abs(map1relative + arrowY)) && map2Pos < arrowY) {
-                tileY = ((map2Pos / tilemapScale) + arrowHeight)% 200;
-                tileY = Math.abs(Math.floor(tileY));
-
-                tileToCheckTop = topLayer2.getTileAtWorldXY(playerShip.x, playerShip.y, true);
-                tileToCheckBot = botLayer2.getTileAtWorldXY(playerShip.x, playerShip.y, true);
-                //console.log('map2');
-            }
-            
-            //determines ship X value and then converts to tileX
-            tileX = Math.floor(((playerShip.x - mapX) / tilemapScale)) % 200;
-
-            // determine which layer to cook at (-1 is the index for no tile)
-
-            //console.log(tileToCheckTop);
-            //console.log(tileToCheckBot);
-
-            if (tileToCheckTop != null) {
-                    if (tileToCheckTop.index != -1) {
-                    selectedIndex = tileToCheckTop.index;
-                } else {
-                    selectedIndex = tileToCheckBot.index;
-                }
-            } else {
-                selectedIndex = -1;
-            }
-            console.log(selectedIndex);
-            
-            // if (selectedIndex != -1) {
-            //     spriteSheetXY = indexToTileOrigin(selectedIndex)
-            // }
-
-            //console.log(spriteSheetXY);
-
-            //get pixel color at determined location on spritesheet
-            // if (spriteSheetXY == -1) {
-            //     console.log("no tilesheet yet!");
-            // } else {
-            //     let color = game.scene.getScenes()[0].textures.getPixel((tileX + spriteSheetXY[0]), (tileY + spriteSheetXY[1]), 'tiles');
-            //     console.log([color.r, color.g, color.b, color.a]);
-            //     //return [color.r, color.g, color.b, color.a];
-            // }
-            
-            
-        }
-
-        function indexToTileOrigin(index) {
-            let originX = (Math.floor(index % 5)) * 200; //finds the top left corner of the tile in question (on the spritesheet)
-            let originY = (Math.floor(index / 5)) * 200;
-            return([originX, originY]);
-        }
-
-        function checkCollisions(rgba, playerColor) { // rgba[]
-            //figure out what color just got passed with pixel color
-                
-                //if eggshell do nothing
-                //if barrier crash
-                //if red yellow or blue
-                    //compare color to current color 
-                    //if transition is fresh and color is same, do noting
-                    //if transition is fresh and color is different, crash (after certin ammount of time)
-                //set "crash" to true if crashed
-        }
-         
-        
-        //updateMap(travelDist, scrollSpeed); //old updateMap function, here for testing mostly...
-
-
-
-        function moveMap() {
-            map1Pos = map1dist;
-            map2Pos = map2dist;
-
-            if (map1Pos > game.config.height + 50) {
-                map1dist = (map2dist + map1relative);
-                //scrollSpeed++
-                if (nextMap >= mapNames.length) {
-                    nextMap = 8;
-                }
-                swapMap1(nextMap);
-                nextMap++;
-                //console.log(nextMap)
-            }
-
-            if (map2Pos > game.config.height + 50) {
-                map2dist = (map1dist + map1relative);
-                //scrollSpeed++
-                if (nextMap >= mapNames.length) {
-                    nextMap = 8;
-                }
-                swapMap2(nextMap)
-                nextMap++
-                //console.log(nextMap)
-            }
-        
-            botLayer1.setPosition(mapX, map1Pos);
-            topLayer1.setPosition(mapX, map1Pos);
-            botLayer2.setPosition(mapX, map2Pos);
-            topLayer2.setPosition(mapX, map2Pos);
-
-            //step maps forward
-            //if has crashed is false
-            map1dist += scrollSpeed;
-            map2dist += scrollSpeed;
-            rawDist++;
-        }
-
-
-        //swap map functions, uses mapData array which is constructed in the create method.
-        function swapMap1(index) {
-            map1 = mapData[index];
-            visuals1 = map1.addTilesetImage('spritesheet', 'tiles');
-            botLayer1 = map1.createLayer('Tile Layer 1', [visuals1], mapX, map1relative);
-            topLayer1 = map1.createLayer('Tile Layer 2', [visuals1], mapX, map1relative);
-            botLayer1.scale = tilemapScale;
-            topLayer1.scale = tilemapScale;
-        }
-
-        function swapMap2(index) {
-            map2 = mapData[index];
-            visuals2 = map2.addTilesetImage('spritesheet', 'tiles');
-            botLayer2 = map2.createLayer('Tile Layer 1', [visuals2], mapX, map2relative);
-            topLayer2 = map2.createLayer('Tile Layer 2', [visuals2], mapX, map2relative);
-            botLayer2.scale = tilemapScale;
-            topLayer2.scale = tilemapScale;
-        }
-
         //run functions
-
         if (!this.pause) { //if the game is not paused...
-            moveMap() //run moveMap fuction
+            this.moveMap() //run moveMap fuction
         }
 
-        //run tilemap RGB function
-        getTilemapRGB();
+        this.getTilemapRGB();
+
+    }  //end of update method
+
+    //getting the tile that the player is on every frame
+    getTilemapRGB() {
+        let tileY = 0;
+        let tileX = 0;
+        let selectedIndex = -1;
+        let tileToCheckTop
+        let tileToCheckBot
+        let spriteSheetXY
+    
+        //determine ship location (y) over tileMap and then converts to tileY
+        //also gather tile data
+
+        if (Math.abs(map1Pos) <= (Math.abs(map1relative + arrowY)) && map1Pos < arrowY) {
+            tileY = ((map1Pos / tilemapScale) + arrowHeight)% 200;
+            tileY = Math.abs(Math.floor(tileY));
+
+            tileToCheckTop = topLayer1.getTileAtWorldXY(playerShip.x, playerShip.y, true);
+            tileToCheckBot = botLayer1.getTileAtWorldXY(playerShip.x, playerShip.y, true);
+            //console.log('map1');
+        }
+        if (Math.abs(map2Pos) <= (Math.abs(map1relative + arrowY)) && map2Pos < arrowY) {
+            tileY = ((map2Pos / tilemapScale) + arrowHeight)% 200;
+            tileY = Math.abs(Math.floor(tileY));
+
+            tileToCheckTop = topLayer2.getTileAtWorldXY(playerShip.x, playerShip.y, true);
+            tileToCheckBot = botLayer2.getTileAtWorldXY(playerShip.x, playerShip.y, true);
+            //console.log('map2');
+        }
+    
+        //determines ship X value and then converts to tileX
+        tileX = Math.floor(((playerShip.x - mapX) / tilemapScale)) % 200;
+
+        // determine which layer to cook at (-1 is the index for no tile)
+
+        //console.log(tileToCheckTop);
+        //console.log(tileToCheckBot);
+
+        if (tileToCheckTop != null) {
+                if (tileToCheckTop.index != -1) {
+                selectedIndex = tileToCheckTop.index;
+            } else {
+                selectedIndex = tileToCheckBot.index;
+            }
+        } else {
+            selectedIndex = -1;
+        }
+    
+        console.log(selectedIndex);
+        
+        // if (selectedIndex != -1) {
+        //     spriteSheetXY = this.indexToTileOrigin(selectedIndex)
+        // }
+
+        //console.log(spriteSheetXY);
+
+        //get pixel color at determined location on spritesheet
+        // if (spriteSheetXY == -1) {
+        //     console.log("no tilesheet yet!");
+        // } else {
+        //     let color = game.scene.getScenes()[0].textures.getPixel((tileX + spriteSheetXY[0]), (tileY + spriteSheetXY[1]), 'tiles');
+        //     console.log([color.r, color.g, color.b, color.a]);
+        //     //return [color.r, color.g, color.b, color.a];
+    }
+    
+    indexToTileOrigin(index) {
+        let originX = (Math.floor(index % 5)) * 200; //finds the top left corner of the tile in question (on the spritesheet)
+        let originY = (Math.floor(index / 5)) * 200;
+        return([originX, originY]);
+    }
+    
+    checkCollisions(rgba, playerColor) { // rgba[]
+        //figure out what color just got passed with pixel color
+            
+            //if eggshell do nothing
+            //if barrier crash
+            //if red yellow or blue
+                //compare color to current color 
+                //if transition is fresh and color is same, do noting
+                //if transition is fresh and color is different, crash (after certin ammount of time)
+            //set "crash" to true if crashed
+    }
+    
+    moveMap() {
+        map1Pos = map1dist;
+        map2Pos = map2dist;
+    
+        if (map1Pos > game.config.height + 50) {
+            map1dist = (map2dist + map1relative);
+            //scrollSpeed++
+            if (nextMap >= mapNames.length) {
+                nextMap = 8;
+            }
+            this.swapMap1(nextMap);
+            nextMap++;
+            //console.log(nextMap)
+        }
+    
+        if (map2Pos > game.config.height + 50) {
+            map2dist = (map1dist + map1relative);
+            //scrollSpeed++
+            if (nextMap >= mapNames.length) {
+                nextMap = 8;
+            }
+            this.swapMap2(nextMap)
+            nextMap++
+            //console.log(nextMap)
+        }
+    
+        botLayer1.setPosition(mapX, map1Pos);
+        topLayer1.setPosition(mapX, map1Pos);
+        botLayer2.setPosition(mapX, map2Pos);
+        topLayer2.setPosition(mapX, map2Pos);
+    
+        //step maps forward
+        //if has crashed is false
+        map1dist += scrollSpeed;
+        map2dist += scrollSpeed;
+        rawDist++;
+    }
+    
+    
+    //swap map functions, uses mapData array which is constructed in the create method.
+    swapMap1(index) {
+        map1 = mapData[index];
+        visuals1 = map1.addTilesetImage('spritesheet', 'tiles');
+        botLayer1 = map1.createLayer('Tile Layer 1', [visuals1], mapX, map1relative);
+        topLayer1 = map1.createLayer('Tile Layer 2', [visuals1], mapX, map1relative);
+        botLayer1.scale = tilemapScale;
+        topLayer1.scale = tilemapScale;
+    }
+    
+    swapMap2(index) {
+        map2 = mapData[index];
+        visuals2 = map2.addTilesetImage('spritesheet', 'tiles');
+        botLayer2 = map2.createLayer('Tile Layer 1', [visuals2], mapX, map2relative);
+        topLayer2 = map2.createLayer('Tile Layer 2', [visuals2], mapX, map2relative);
+        botLayer2.scale = tilemapScale;
+        topLayer2.scale = tilemapScale;
     }
 }
