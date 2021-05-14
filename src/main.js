@@ -16,6 +16,8 @@ let game = new Phaser.Game(config);
 let spaceBar, keyLeft, keyRight, keyPause;
 
 // set Global variables
+
+//map variables (sorry Adam, but .this aint it <3)
 let playerShip = null;
 let newMap = null;
 let visualsNew = null;
@@ -41,6 +43,7 @@ const screenCenterX = game.config.width/2;
 const tilemapScale = 0.6;
 const arrowScale = 0.5;
 
+//Map horizontal offet to make sure it's always centered
 const mapX = screenCenterX - (tilemapScale * 300);
 
 
@@ -60,28 +63,29 @@ const map1relative = ((8000 * tilemapScale) * -1);  //  -4800
 const map2relative = ((8000 * tilemapScale) * -2);  //  -9600
 let map1dist = map1relative;
 let map2dist = map2relative;
-let inOrder = true;
 
 
-//total distance traveled
+
+//total distance traveled, to be used for score later
 let travelDist = 0;
 let rawDist = 0;
-//scrolling rate (start)
-let scrollSpeed = 8;
 
-//current lane of the player to restrict its movement
+//scrolling rate (start)
+let scrollSpeed = 5;
+
+//current lane of the player
 let currentLane = 1;
 
 
-//data structures for maps
+//data structures and stuff for maps
 
 //map name arrays, must be updated when new maps are added
 let mapsEasy = ['easy1', 'easy2', 'easy3'];
 let mapsMid = ['mid1', 'mid2', 'mid3', 'mid4'];
 let mapsHard = ['hard1', 'hard2', 'hard3', 'hard4', 'hard5', 'hard6', 'hard7'];
 
+//future function that defines a random map order for each game, but still conforms to tutorial order and difficulty.
 function createMapOrder() {
-    //future function that defines a random map order for each game, but still conforms to tutorial and difficulty.
     return mapsEasy.concat(mapsMid, mapsHard); //currently puts maps in order.
 }
 
@@ -89,6 +93,6 @@ let mapNames = createMapOrder(); //populate map names order
 let mapData = [];
 let nextMap = 2; //counter used to index through mapNames array, change to start on a particular map (after maps 1 and 2 pass) (DEFUALT IS 2)
 
-if (nextMap >= mapNames.length) { //puts you on the last map even if next map is set to a number greater than the number of maps loaded.
+if (nextMap >= mapNames.length) { //puts you on the last map even if nextMap is set to a number greater than the number of maps loaded. (safety net)
     nextMap = mapNames.length - 1;
 }
