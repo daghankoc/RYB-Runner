@@ -71,7 +71,7 @@ let travelDist = 0;
 let rawDist = 0;
 
 //scrolling rate (start)
-let scrollSpeed = 5;
+let scrollSpeed = 6;
 
 //current lane of the player
 let currentLane = 1;
