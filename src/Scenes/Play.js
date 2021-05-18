@@ -31,6 +31,15 @@ class Play extends Phaser.Scene {
             this.load.tilemapTiledJSON('hard6', './maps/maps_skill/hard6.json');
             this.load.tilemapTiledJSON('hard7', './maps/maps_skill/hard7.json');
 
+            this.load.tilemapTiledJSON('map1', './maps/map1.json');
+            this.load.tilemapTiledJSON('map2', './maps/map2.json');
+            this.load.tilemapTiledJSON('map3', './maps/map3.json');
+            this.load.tilemapTiledJSON('map4', './maps/map4.json');
+            this.load.tilemapTiledJSON('map5', './maps/map5.json');
+            this.load.tilemapTiledJSON('map6', './maps/map6.json');
+            this.load.tilemapTiledJSON('map7', './maps/map7.json');
+            this.load.tilemapTiledJSON('testmap_2', './maps/testmap_2.json');
+
 
         //sound effect that plays when you move
         this.load.audio('move_sfx', './assets/testSound.wav')
@@ -75,6 +84,9 @@ class Play extends Phaser.Scene {
         this.actionQueue = [];
         this.pause = false;
         this.crash = false;
+        this.endofgame = false;
+        this.curRed = 0;
+        this.curColor = '';
 
 
         //Adding inputes to use
@@ -254,8 +266,38 @@ class Play extends Phaser.Scene {
         if (!this.pause) { //if the game is not paused...
             this.moveMap() //run moveMap fuction
         }
+        // RGB of pixel under player (both layers) -1 mean no layer (#topLayer problems)
+        let hitboxRGB = this.getTilemapRGB();
 
-        this.getTilemapRGB();
+        //log the correct layer (for demo purposes)
+        
+        if (hitboxRGB[1][0] > 0) {
+            this.curRed = (hitboxRGB[1][0]); //logging the red value of the top layer (when it has data to give)
+        } else {
+            this.curRed = (hitboxRGB[0][0]); //logging the red value of the bottom layer
+        }
+
+        switch (this.curRed) {
+            case 206:
+                this.curColor = "red";
+                break;
+              case 238:
+                this.curColor = "yellow";
+                break;
+              case 50:
+                this.curColor = "blue";
+                break;
+              case 251:
+                this.curColor = "eggshell";
+                break;
+              case 20:
+                this.curColor = "barrier";
+                break;
+              default:
+                this.curColor = "other/none"
+        }
+        console.log(this.curColor);
+        
 
     }  //end of update method
 
@@ -263,70 +305,94 @@ class Play extends Phaser.Scene {
     getTilemapRGB() {
         let tileY = 0;
         let tileX = 0;
-        let selectedIndex = -1;
-        let tileToCheckTop
-        let tileToCheckBot
-        let spriteSheetXY
+        let selectedIndex = [-1, -1];
+        let tileToCheckTop;
+        let tileToCheckBot;
+        let topLayerXY;
+        let botLayerXY;
+        let topRGB;
+        let botRGB;
     
         //determine ship location (y) over tileMap and then converts to tileY
         //also gather tile data
 
         if (Math.abs(map1Pos) <= (Math.abs(map1relative + arrowY)) && map1Pos < arrowY) {
-            tileY = ((map1Pos / tilemapScale) + arrowHeight)% 200;
-            tileY = Math.abs(Math.floor(tileY));
+            tileY = ((map1Pos + map2relative - arrowHeight) / tilemapScale) % 200;
+            tileY = Math.abs(Math.floor(tileY)); // weird shit with the positioning since map1 pos can be pos and neg.
+            //console.log(tileY);
 
             tileToCheckTop = topLayer1.getTileAtWorldXY(playerShip.x, playerShip.y, true);
             tileToCheckBot = botLayer1.getTileAtWorldXY(playerShip.x, playerShip.y, true);
-            //console.log('map1');
+
         }
         if (Math.abs(map2Pos) <= (Math.abs(map1relative + arrowY)) && map2Pos < arrowY) {
-            tileY = ((map2Pos / tilemapScale) + arrowHeight)% 200;
+            tileY = ((map2Pos + map2relative - arrowHeight) / tilemapScale) % 200;
             tileY = Math.abs(Math.floor(tileY));
 
             tileToCheckTop = topLayer2.getTileAtWorldXY(playerShip.x, playerShip.y, true);
             tileToCheckBot = botLayer2.getTileAtWorldXY(playerShip.x, playerShip.y, true);
-            //console.log('map2');
+            //console.log(tileY);
         }
     
         //determines ship X value and then converts to tileX
         tileX = Math.floor(((playerShip.x - mapX) / tilemapScale)) % 200;
 
-        // determine which layer to cook at (-1 is the index for no tile)
-
         //console.log(tileToCheckTop);
         //console.log(tileToCheckBot);
 
+        //if a tilemap is loaded, pull the correct indexes.
+        //otherwise just exit
         if (tileToCheckTop != null) {
-                if (tileToCheckTop.index != -1) {
-                selectedIndex = tileToCheckTop.index;
+                selectedIndex[0] = tileToCheckBot.index;
+                selectedIndex[1] = tileToCheckTop.index;
             } else {
-                selectedIndex = tileToCheckBot.index;
-            }
-        } else {
-            selectedIndex = -1;
+            selectedIndex[0, 1] = -1;
+            return selectedIndex;
         }
+        //console.log(selectedIndex[1]);
     
-        console.log(selectedIndex);
-        
-        // if (selectedIndex != -1) {
-        //     spriteSheetXY = this.indexToTileOrigin(selectedIndex)
-        // }
+        //if top layer isn't empty, get the RGB at player location
+        if (selectedIndex[1] != -1) {
+            topLayerXY = this.indexToTileOrigin(selectedIndex[1], tileX, tileY);
+            //console.log(topLayerXY);
+            topRGB = this.getPixelRGB(topLayerXY);
+        } else {
+            topRGB = [-1, -1, -1, -1];
+        }
 
-        //console.log(spriteSheetXY);
+        //if bottom layer isn't empty, get the RGB at player location
+        if (selectedIndex[0] != -1) {
+            botLayerXY = this.indexToTileOrigin(selectedIndex[0], tileX, tileY);
+            botRGB = this.getPixelRGB(botLayerXY);
+        } else {
+            botRGB = [-1, -1, -1, -1];
+        }
 
-        //get pixel color at determined location on spritesheet
-        // if (spriteSheetXY == -1) {
-        //     console.log("no tilesheet yet!");
-        // } else {
-        //     let color = game.scene.getScenes()[0].textures.getPixel((tileX + spriteSheetXY[0]), (tileY + spriteSheetXY[1]), 'tiles');
-        //     console.log([color.r, color.g, color.b, color.a]);
-        //     //return [color.r, color.g, color.b, color.a];
+        //return RGB data (or lack thereof)
+        return [botRGB, topRGB];
     }
     
-    indexToTileOrigin(index) {
-        let originX = (Math.floor(index % 5)) * 200; //finds the top left corner of the tile in question (on the spritesheet)
-        let originY = (Math.floor(index / 5)) * 200;
-        return([originX, originY]);
+    //function that converts a tilemap index to the origin point (in pixels) of that tile on the spritesheet.
+    indexToTileOrigin(index, arrowX, arrowY) {
+        if (index == -1) {
+            return -1
+        } else {
+            let originX = (Math.floor((index - 1) % 5)) * 200; //finds the top left corner of the tile in question (on the spritesheet)
+            let originY = ((index - Math.floor(index % 5)) / 5) * 200;
+
+            //console.log(originX, originY);
+            return([originX + arrowX, originY + arrowY]);
+        }
+    }
+
+    //function that gets the RGB value at a particular XY location on the spritesheet 'tiles'
+    getPixelRGB(xy) {
+        let color = game.scene.getScenes()[0].textures.getPixel(xy[0], xy[1], 'tiles');
+            //console.log([color.r, color.g, color.b, color.a]);
+            //console.log('RGB sum = ' + color.r + color.g + color.b);
+
+            return [color.r, color.g, color.b, color.a]; //actual RGB
+            //return (color.r + color.g + color.b); //sum of RGB
     }
     
     checkCollisions(rgba, playerColor) { // rgba[]
@@ -344,28 +410,31 @@ class Play extends Phaser.Scene {
     moveMap() {
         map1Pos = map1dist;
         map2Pos = map2dist;
-    
-        if (map1Pos > game.config.height + 50) {
-            map1dist = (map2dist + map1relative);
-            //scrollSpeed++
-            if (nextMap >= mapNames.length) {
-                nextMap = 8;
+        
+        if (!this.endofgame) {
+            if (map1Pos > game.config.height + 50) {
+                map1dist = (map2dist + map1relative);
+                //scrollSpeed++
+                if (nextMap >= mapNames.length -1) {
+                    this.endofgame = true;
+                }
+                this.swapMap1(nextMap);
+                nextMap++;
+                //console.log(nextMap)
             }
-            this.swapMap1(nextMap);
-            nextMap++;
-            //console.log(nextMap)
-        }
-    
-        if (map2Pos > game.config.height + 50) {
-            map2dist = (map1dist + map1relative);
-            //scrollSpeed++
-            if (nextMap >= mapNames.length) {
-                nextMap = 8;
+        
+            if (map2Pos > game.config.height + 50) {
+                map2dist = (map1dist + map1relative);
+                //scrollSpeed++
+                if (nextMap >= mapNames.length -1) {
+                    this.endofgame = true;
+                }
+                this.swapMap2(nextMap)
+                nextMap++
+                //console.log(nextMap)
             }
-            this.swapMap2(nextMap)
-            nextMap++
-            //console.log(nextMap)
         }
+        
     
         botLayer1.setPosition(mapX, map1Pos);
         topLayer1.setPosition(mapX, map1Pos);

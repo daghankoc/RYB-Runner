@@ -71,7 +71,7 @@ let travelDist = 0;
 let rawDist = 0;
 
 //scrolling rate (start)
-let scrollSpeed = 6;
+let scrollSpeed = 4;
 
 //current lane of the player
 let currentLane = 1;
@@ -83,6 +83,7 @@ let currentLane = 1;
 let mapsEasy = ['easy1', 'easy2', 'easy3'];
 let mapsMid = ['mid1', 'mid2', 'mid3', 'mid4'];
 let mapsHard = ['hard1', 'hard2', 'hard3', 'hard4', 'hard5', 'hard6', 'hard7'];
+let mapsHardAlt = ['map1', 'map2', 'map3', 'map4', 'map5', 'map6', 'map7', 'testmap_2']; //not working
 
 //future function that defines a random map order for each game, but still conforms to tutorial order and difficulty.
 function createMapOrder() {
