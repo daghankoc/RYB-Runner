@@ -31,14 +31,14 @@ class Play extends Phaser.Scene {
             this.load.tilemapTiledJSON('hard6', './maps/maps_skill/hard6.json');
             this.load.tilemapTiledJSON('hard7', './maps/maps_skill/hard7.json');
 
-            this.load.tilemapTiledJSON('map1', './maps/map1.json');
-            this.load.tilemapTiledJSON('map2', './maps/map2.json');
-            this.load.tilemapTiledJSON('map3', './maps/map3.json');
-            this.load.tilemapTiledJSON('map4', './maps/map4.json');
-            this.load.tilemapTiledJSON('map5', './maps/map5.json');
-            this.load.tilemapTiledJSON('map6', './maps/map6.json');
-            this.load.tilemapTiledJSON('map7', './maps/map7.json');
-            this.load.tilemapTiledJSON('testmap_2', './maps/testmap_2.json');
+            this.load.tilemapTiledJSON('indexTest', './maps/indexTesting.json');
+            // this.load.tilemapTiledJSON('map2', './maps/map2.json');
+            // this.load.tilemapTiledJSON('map3', './maps/map3.json');
+            // this.load.tilemapTiledJSON('map4', './maps/map4.json');
+            // this.load.tilemapTiledJSON('map5', './maps/map5.json');
+            // this.load.tilemapTiledJSON('map6', './maps/map6.json');
+            // this.load.tilemapTiledJSON('map7', './maps/map7.json');
+            // this.load.tilemapTiledJSON('testmap_2', './maps/testmap_2.json');
 
 
         //sound effect that plays when you move
@@ -83,10 +83,12 @@ class Play extends Phaser.Scene {
         this.transitioning = false;
         this.actionQueue = [];
         this.pause = false;
-        this.crash = false;
+        this.crashing = false;
+        this.transition = false;
         this.endofgame = false;
         this.curRed = 0;
         this.curColor = '';
+        this.hitboxRGB;
 
 
         //Adding inputes to use
@@ -213,6 +215,7 @@ class Play extends Phaser.Scene {
                 {
                     //console.log("Color switched to yellow");
                     //changes the frame of the spritesheet to blue
+                    playerColor = 'yellow';
                     playerShip.setFrame(1);
                     playerShip.currentFrame = 1;
                     this.circleOutline.setPosition(screenCenterX, 936);
@@ -220,6 +223,7 @@ class Play extends Phaser.Scene {
                 {
                     //console.log("Color switched to blue");
                     //changes the frame of the spritesheet to blue
+                    playerColor = 'blue';
                     playerShip.setFrame(2);
                     playerShip.currentFrame = 2;
                     this.circleOutline.setPosition(screenCenterX + (arrowDist/2), 935);
@@ -227,6 +231,7 @@ class Play extends Phaser.Scene {
                 {
                     //console.log("Color switched to red");
                     //changes the frame of the spritesheet to blue
+                    playerColor = 'red';
                     playerShip.setFrame(0);
                     playerShip.currentFrame = 0;
                     this.circleOutline.setPosition(screenCenterX - (arrowDist/2), 935);
@@ -264,42 +269,48 @@ class Play extends Phaser.Scene {
 
         //run functions
         if (!this.pause) { //if the game is not paused...
-            this.moveMap() //run moveMap fuction
-        }
-        // RGB of pixel under player (both layers) -1 mean no layer (#topLayer problems)
-        let hitboxRGB = this.getTilemapRGB();
+            this.moveMap()
+            // RGB of pixel under player (both layers) -1 mean no layer (#topLayer problems)
+            this.hitboxRGB = this.getTilemapRGB();
 
-        //log the correct layer (for demo purposes)
-        
-        if (hitboxRGB[1][0] > 0) {
-            this.curRed = (hitboxRGB[1][0]); //logging the red value of the top layer (when it has data to give)
-        } else {
-            this.curRed = (hitboxRGB[0][0]); //logging the red value of the bottom layer
-        }
+            //determine the correct layer to test
+            if (this.hitboxRGB[1][0] > 0) { //if red has no value in the top layer
+                this.curRed = (this.hitboxRGB[1][0]); //top layer is selected
+            } else {
+                this.curRed = (this.hitboxRGB[0][0]); //otherwise, bottom layer is selected
+            }
 
-        switch (this.curRed) {
+            //console.log(this.whatColor(this.curRed));
+
+            //check collisions after converting Red value to a color string.
+            this.checkCollisions(this.whatColor(this.curRed), playerColor);
+        }
+    }  //end of update method
+
+    // function to figure out what color an RGB value is, This version only uses the R value.
+    whatColor(redValue) {
+        let color;
+        switch (redValue) {
             case 206:
-                this.curColor = "red";
+                color = "red";
                 break;
               case 238:
-                this.curColor = "yellow";
+                color = "yellow";
                 break;
               case 50:
-                this.curColor = "blue";
+                color = "blue";
                 break;
               case 251:
-                this.curColor = "eggshell";
+                color = "eggshell";
                 break;
               case 20:
-                this.curColor = "barrier";
+                color = "barrier";
                 break;
               default:
-                this.curColor = "other/none"
+                color = "n/a"
         }
-        console.log(this.curColor);
-        
-
-    }  //end of update method
+        return color;
+    }
 
     //getting the tile that the player is on every frame
     getTilemapRGB() {
@@ -349,7 +360,7 @@ class Play extends Phaser.Scene {
             selectedIndex[0, 1] = -1;
             return selectedIndex;
         }
-        //console.log(selectedIndex[1]);
+        //console.log(selectedIndex[0]);
     
         //if top layer isn't empty, get the RGB at player location
         if (selectedIndex[1] != -1) {
@@ -374,13 +385,13 @@ class Play extends Phaser.Scene {
     
     //function that converts a tilemap index to the origin point (in pixels) of that tile on the spritesheet.
     indexToTileOrigin(index, arrowX, arrowY) {
+        let indexMinus1 = index - 1;
         if (index == -1) {
             return -1
         } else {
-            let originX = (Math.floor((index - 1) % 5)) * 200; //finds the top left corner of the tile in question (on the spritesheet)
-            let originY = ((index - Math.floor(index % 5)) / 5) * 200;
-
-            //console.log(originX, originY);
+            let originX = (Math.floor((indexMinus1) % 5)) * 200; //finds the top left corner of the tile in question (on the spritesheet)
+            let originY = ((indexMinus1 - (indexMinus1 % 5)) / 5) * 200;
+            //console.log(index, originX, originY);
             return([originX + arrowX, originY + arrowY]);
         }
     }
@@ -390,52 +401,93 @@ class Play extends Phaser.Scene {
         let color = game.scene.getScenes()[0].textures.getPixel(xy[0], xy[1], 'tiles');
             //console.log([color.r, color.g, color.b, color.a]);
             //console.log('RGB sum = ' + color.r + color.g + color.b);
-
+        if (color != null) {
             return [color.r, color.g, color.b, color.a]; //actual RGB
             //return (color.r + color.g + color.b); //sum of RGB
+        } else {
+            return [-1, -1, -1, -1];
+        }
+            
     }
     
-    checkCollisions(rgba, playerColor) { // rgba[]
-        //figure out what color just got passed with pixel color
-            
-            //if eggshell do nothing
-            //if barrier crash
-            //if red yellow or blue
-                //compare color to current color 
-                //if transition is fresh and color is same, do noting
-                //if transition is fresh and color is different, crash (after certin ammount of time)
-            //set "crash" to true if crashed
+    checkCollisions(newTile, player) { 
+        let oldTile = tileColor;
+        if (oldTile != newTile) {
+            this.transition = true;
+        } else {
+            this.transition = false;
+        }
+
+        if (this.transition) {
+            switch (newTile) {
+                case 'red':
+                    if (player != 'red') {
+                        this.crashing = true;
+                    } else {
+                        console.log('safe red');
+                    }
+                    break;
+                case 'yellow':
+                    if (player != 'yellow') {
+                        this.crashing = true;
+                    } else {
+                        console.log('safe yellow');
+                    }
+                    break;
+                case 'blue':
+                    if (player != 'blue') {
+                        this.crashing = true;
+                    } else {
+                        console.log('safe blue');
+                    }
+                    break;
+                case 'barrier':
+                    this.crashing = true;
+                    break;
+                case 'eggshell':
+                    console.log('safe eggshell');
+                    break;
+                default:
+                    // nothing needs to be done
+            }
+        }
+        if (this.crashing) { //if a crash has been detected
+            console.log('crashed!');
+            this.sound.play('move_sfx');
+            this.pause = true;
+            this.crashing = false;
+        }
+        tileColor = newTile;
     }
     
     moveMap() {
         map1Pos = map1dist;
         map2Pos = map2dist;
         
-        if (!this.endofgame) {
-            if (map1Pos > game.config.height + 50) {
-                map1dist = (map2dist + map1relative);
-                //scrollSpeed++
-                if (nextMap >= mapNames.length -1) {
-                    this.endofgame = true;
-                }
-                this.swapMap1(nextMap);
-                nextMap++;
-                //console.log(nextMap)
-            }
         
-            if (map2Pos > game.config.height + 50) {
-                map2dist = (map1dist + map1relative);
-                //scrollSpeed++
-                if (nextMap >= mapNames.length -1) {
-                    this.endofgame = true;
-                }
-                this.swapMap2(nextMap)
-                nextMap++
-                //console.log(nextMap)
+        if (map1Pos > game.config.height + 50) {
+            map1dist = (map2dist + map1relative);
+            //scrollSpeed++
+            if (nextMap >= mapNames.length -1) {
+                nextMap = mapNames.length -1;
             }
+            this.swapMap1(nextMap);
+            nextMap++;
+            //console.log(nextMap)
+        }
+    
+        if (map2Pos > game.config.height + 50) {
+            map2dist = (map1dist + map1relative);
+            //scrollSpeed++
+            if (nextMap >= mapNames.length -1) {
+                nextMap = mapNames.length -1;
+            }
+            this.swapMap2(nextMap)
+            nextMap++
+            //console.log(nextMap)
         }
         
-    
+        
         botLayer1.setPosition(mapX, map1Pos);
         topLayer1.setPosition(mapX, map1Pos);
         botLayer2.setPosition(mapX, map2Pos);
@@ -452,7 +504,11 @@ class Play extends Phaser.Scene {
     //swap map functions, uses mapData array which is constructed in the create method.
     swapMap1(index) {
         map1 = mapData[index];
-        visuals1 = map1.addTilesetImage('spritesheet', 'tiles');
+        //visuals1 = map1.addTilesetImage('spritesheet', 'tiles');
+        
+        botLayer1.destroy();
+        topLayer1.destroy();
+
         botLayer1 = map1.createLayer('Tile Layer 1', [visuals1], mapX, map1relative);
         topLayer1 = map1.createLayer('Tile Layer 2', [visuals1], mapX, map1relative);
         botLayer1.scale = tilemapScale;
@@ -461,7 +517,11 @@ class Play extends Phaser.Scene {
     
     swapMap2(index) {
         map2 = mapData[index];
-        visuals2 = map2.addTilesetImage('spritesheet', 'tiles');
+        //visuals2 = map2.addTilesetImage('spritesheet', 'tiles');
+
+        botLayer2.destroy();
+        topLayer2.destroy();
+
         botLayer2 = map2.createLayer('Tile Layer 1', [visuals2], mapX, map2relative);
         topLayer2 = map2.createLayer('Tile Layer 2', [visuals2], mapX, map2relative);
         botLayer2.scale = tilemapScale;

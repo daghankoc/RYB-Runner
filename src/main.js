@@ -64,14 +64,18 @@ const map2relative = ((8000 * tilemapScale) * -2);  //  -9600
 let map1dist = map1relative;
 let map2dist = map2relative;
 
+//player color
+let playerColor = 'red'; //starting color is red
 
+//tile color (under player)
+let tileColor
 
 //total distance traveled, to be used for score later
 let travelDist = 0;
 let rawDist = 0;
 
 //scrolling rate (start)
-let scrollSpeed = 4;
+let scrollSpeed = 5;
 
 //current lane of the player
 let currentLane = 1;
