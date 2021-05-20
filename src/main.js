@@ -71,8 +71,8 @@ let playerColor = 'red'; //starting color is red
 let tileColor
 
 //total distance traveled, to be used for score later
-let travelDist = 0;
-let rawDist = 0;
+let scoreCount = 0;
+let rawDist = -arrowY;
 
 //scrolling rate (start)
 let scrollSpeed = 5;

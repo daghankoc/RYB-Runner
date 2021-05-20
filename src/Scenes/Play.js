@@ -84,7 +84,7 @@ class Play extends Phaser.Scene {
         this.actionQueue = [];
         this.pause = false;
         this.crashing = false;
-        this.transition = false;
+        this.colorTransition = false;
         this.endofgame = false;
         this.curRed = 0;
         this.curColor = '';
@@ -413,12 +413,12 @@ class Play extends Phaser.Scene {
     checkCollisions(newTile, player) { 
         let oldTile = tileColor;
         if (oldTile != newTile) {
-            this.transition = true;
+            this.colorTransition = true;
         } else {
-            this.transition = false;
+            this.colorTransition = false;
         }
 
-        if (this.transition) {
+        if (this.colorTransition) {
             switch (newTile) {
                 case 'red':
                     if (player != 'red') {
@@ -497,7 +497,10 @@ class Play extends Phaser.Scene {
         //if has crashed is false
         map1dist += scrollSpeed;
         map2dist += scrollSpeed;
-        rawDist++;
+        rawDist += scrollSpeed; //use this for the tutorial spacing
+
+        scoreCount = Math.floor((rawDist / tilemapScale) / 200)
+        //console.log(scoreCount);
     }
     
     
