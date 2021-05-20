@@ -14,50 +14,43 @@ class Play extends Phaser.Scene {
 
         //preload final maps.
 
-            this.load.tilemapTiledJSON('easy1', './maps/maps_skill/easy1.json');
-            this.load.tilemapTiledJSON('easy2', './maps/maps_skill/easy2.json');
-            this.load.tilemapTiledJSON('easy3', './maps/maps_skill/easy3.json');
+        this.load.tilemapTiledJSON('easy1', './maps/maps_skill/easy1.json');
+        this.load.tilemapTiledJSON('easy2', './maps/maps_skill/easy2.json');
+        this.load.tilemapTiledJSON('easy3', './maps/maps_skill/easy3.json');
 
-            this.load.tilemapTiledJSON('mid1', './maps/maps_skill/mid1.json');
-            this.load.tilemapTiledJSON('mid2', './maps/maps_skill/mid2.json');
-            this.load.tilemapTiledJSON('mid3', './maps/maps_skill/mid3.json');
-            this.load.tilemapTiledJSON('mid4', './maps/maps_skill/mid4b.json');
+        this.load.tilemapTiledJSON('mid1', './maps/maps_skill/mid1.json');
+        this.load.tilemapTiledJSON('mid2', './maps/maps_skill/mid2.json');
+        this.load.tilemapTiledJSON('mid3', './maps/maps_skill/mid3.json');
+        this.load.tilemapTiledJSON('mid4', './maps/maps_skill/mid4b.json');
 
-            this.load.tilemapTiledJSON('hard1', './maps/maps_skill/hard1.json');
-            this.load.tilemapTiledJSON('hard2', './maps/maps_skill/hard2.json');
-            this.load.tilemapTiledJSON('hard3', './maps/maps_skill/hard3.json');
-            this.load.tilemapTiledJSON('hard4', './maps/maps_skill/hard4.json');
-            this.load.tilemapTiledJSON('hard5', './maps/maps_skill/hard5.json');
-            this.load.tilemapTiledJSON('hard6', './maps/maps_skill/hard6.json');
-            this.load.tilemapTiledJSON('hard7', './maps/maps_skill/hard7.json');
+        this.load.tilemapTiledJSON('hard1', './maps/maps_skill/hard1.json');
+        this.load.tilemapTiledJSON('hard2', './maps/maps_skill/hard2.json');
+        this.load.tilemapTiledJSON('hard3', './maps/maps_skill/hard3.json');
+        this.load.tilemapTiledJSON('hard4', './maps/maps_skill/hard4.json');
+        this.load.tilemapTiledJSON('hard5', './maps/maps_skill/hard5.json');
+        this.load.tilemapTiledJSON('hard6', './maps/maps_skill/hard6.json');
+        this.load.tilemapTiledJSON('hard7', './maps/maps_skill/hard7.json');
 
-            this.load.tilemapTiledJSON('indexTest', './maps/indexTesting.json');
-            // this.load.tilemapTiledJSON('map2', './maps/map2.json');
-            // this.load.tilemapTiledJSON('map3', './maps/map3.json');
-            // this.load.tilemapTiledJSON('map4', './maps/map4.json');
-            // this.load.tilemapTiledJSON('map5', './maps/map5.json');
-            // this.load.tilemapTiledJSON('map6', './maps/map6.json');
-            // this.load.tilemapTiledJSON('map7', './maps/map7.json');
-            // this.load.tilemapTiledJSON('testmap_2', './maps/testmap_2.json');
+        this.load.tilemapTiledJSON('indexTest', './maps/indexTesting.json');
 
 
         //sound effect that plays when you move
-        this.load.audio('move_sfx', './assets/testSound.wav')
+        this.load.audio('move_sfx', './assets/audio/testSound.wav')
 
         //sound effect that plays when you cycle colors
-        this.load.audio('cycle_sfx', './assets/testSound.wav')
+        this.load.audio('cycle_sfx', './assets/audio/testSound.wav')
 
         //sound effect that plays when you cross into a new color zone (successfully)
-        this.load.audio('transition_sfx', './assets/testSound.wav')
+        this.load.audio('transition_sfx', './assets/audio/testSound.wav')
 
         //sound effect that plays when you pause or use a menu button
-        this.load.audio('menu_sfx', './assets/testSound.wav')
+        this.load.audio('menu_sfx', './assets/audio/testSound.wav')
 
         //sound effect that plays when you crash :(
-        this.load.audio('menu_sfx', './assets/testSound.wav')
+        this.load.audio('menu_sfx', './assets/audio/testSound.wav')
 
         //background music
-        this.load.audio('music_sfx', './assets/testMusic.mp3')
+        this.load.audio('music_sfx', './assets/audio/testMusic.mp3')
 
 
         //load image assets
@@ -65,11 +58,31 @@ class Play extends Phaser.Scene {
         this.load.image('UI_circle_outline','./assets/UI_circle_outline.png');
     
         //loading the different player colors as spritesheets
-        //frame 1 = red, 2 = blue,3 = yellow 
+        //frame 1 = red, 2 = blue, 3 = yellow 
         this.load.spritesheet('player', "./assets/arrowRYB.png",{
             frameWidth: 112,
             frameHeight: 167,
-            });
+        });
+
+        this.load.spritesheet('redUI', "./assets/ui/dotsred.png",{
+            frameWidth: 100,
+            frameHeight: 100,
+        });
+
+        this.load.spritesheet('yellowUI', "./assets/ui/dotsyellow.png",{
+            frameWidth: 100,
+            frameHeight: 100,
+        });
+
+        this.load.spritesheet('blueUI', "./assets/ui/dotsblue.png",{
+            frameWidth: 100,
+            frameHeight: 100,
+        });
+
+        this.load.spritesheet('scoreUI', "./assets/ui/dotsscore.png",{
+            frameWidth: 100,
+            frameHeight: 100,
+        });
     }
     
     
@@ -125,7 +138,6 @@ class Play extends Phaser.Scene {
         // }
 
         //map2 initialization
-        //map2 = this.add.tilemap('hard3');
         map2 = mapData[1];
         visuals2 = map2.addTilesetImage('spritesheet', 'tiles'); //change "base" to "spritesheet" when we add the loading stuff update
         botLayer2 = map2.createLayer('Tile Layer 1', [visuals2], mapX, map2relative);
@@ -133,20 +145,6 @@ class Play extends Phaser.Scene {
         botLayer2.scale = tilemapScale;
         topLayer2.scale = tilemapScale;
 
-        
-
-
-
-        //old map spawning code
-        // map = this.add.tilemap('map');
-        // visuals = map.addTilesetImage('base', 'tiles'); //change "base" to "spritesheet" when we add the loading stuff update
-        // botLayer = map.createLayer('Tile Layer 1', [visuals], mapX, 0);
-        // topLayer = map.createLayer('Tile Layer 2', [visuals], mapX, 0);
-        mapToRemove = map1;
-
-        // botLayer.scale = tilemapScale;
-        // topLayer.scale = tilemapScale;
-    
         // placing arrow asset
         playerShip = this.add.sprite(screenCenterX, arrowY, 'player').setOrigin(0.5,0.5);
         playerShip.scale = arrowScale;
@@ -161,21 +159,25 @@ class Play extends Phaser.Scene {
         playerShip.setDepth('1');    
 
         //creating a bottom UI bar for the color indicator
-        this.circleOutline = this.add.sprite(screenCenterX - (arrowDist/2), 936, 'UI_circle_outline').setOrigin(0.5, 0.5);
-        this.circleOutline.setDepth('2');
+        // this.circleOutline = this.add.sprite(screenCenterX - (arrowDist/2), 936, 'UI_circle_outline').setOrigin(0.5, 0.5);
+        // this.circleOutline.setDepth('2');
 
         //this.add.rectangle(0, screenCenterY * 1.9,screenCenterX * 2 , screenCenterY / 3, "0xffffff").setOrigin(0.5, 0.5);
-        this.redCircle = this.add.sprite(screenCenterX - (arrowDist/2), 935, 'UI_circle').setOrigin(0.5, 0.5);
-        this.redCircle.setTint("0xCF1313");
+        this.redCircle = this.add.sprite(screenCenterX - (arrowDist/2), 935, 'redUI').setOrigin(0.5, 0.5);
+        //this.redCircle.setTint("0xCF1313");
         this.redCircle.setDepth('1');
+        this.redCircle.scale = 0.3;
+        this.redCircle.setFrame(1)
         
-        this.yellowCircle = this.add.sprite(screenCenterX, 935, 'UI_circle').setOrigin(0.5, 0.5);
-        this.yellowCircle.setTint("0xeed456");
+        this.yellowCircle = this.add.sprite(screenCenterX, 935, 'yellowUI').setOrigin(0.5, 0.5);
+        //this.yellowCircle.setTint("0xeed456");
         this.yellowCircle.setDepth('1');
+        this.yellowCircle.scale = 0.3;
 
-        this.blueCircle = this.add.sprite(screenCenterX + (arrowDist/2), 935, 'UI_circle').setOrigin(0.5, 0.5);
-        this.blueCircle.setTint("0x1181D9");
+        this.blueCircle = this.add.sprite(screenCenterX + (arrowDist/2), 935, 'blueUI').setOrigin(0.5, 0.5);
+        //this.blueCircle.setTint("0x1181D9");
         this.blueCircle.setDepth('1');
+        this.blueCircle.scale = 0.3;
 
  
     }
@@ -218,7 +220,8 @@ class Play extends Phaser.Scene {
                     playerColor = 'yellow';
                     playerShip.setFrame(1);
                     playerShip.currentFrame = 1;
-                    this.circleOutline.setPosition(screenCenterX, 936);
+                    this.redCircle.setFrame(0);
+                    this.yellowCircle.setFrame(1);
                 } else if (playerShip.currentFrame == 1)
                 {
                     //console.log("Color switched to blue");
@@ -226,7 +229,8 @@ class Play extends Phaser.Scene {
                     playerColor = 'blue';
                     playerShip.setFrame(2);
                     playerShip.currentFrame = 2;
-                    this.circleOutline.setPosition(screenCenterX + (arrowDist/2), 935);
+                    this.yellowCircle.setFrame(0);
+                    this.blueCircle.setFrame(1);
                 } else if(playerShip.currentFrame == 2)
                 {
                     //console.log("Color switched to red");
@@ -234,7 +238,8 @@ class Play extends Phaser.Scene {
                     playerColor = 'red';
                     playerShip.setFrame(0);
                     playerShip.currentFrame = 0;
-                    this.circleOutline.setPosition(screenCenterX - (arrowDist/2), 935);
+                    this.blueCircle.setFrame(0);
+                    this.redCircle.setFrame(1);
                 }
             }
 
