@@ -90,7 +90,10 @@ class Play extends Phaser.Scene {
         //setting the background color to eggshell
         //this.cameras.main.setBackgroundColor('#fbfbe3');
 
-        this.sound.play('music_sfx');
+        //sets music to loop and plays it
+        var music = this.sound.add('music_sfx');
+        music.setLoop(true);
+        music.play();
 
         //declaring local variables
         this.transitioning = false;
@@ -247,33 +250,64 @@ class Play extends Phaser.Scene {
                     this.redCircle.setFrame(1);
                 }
             }
-
-            //Tween movement to right lane with left arrow key
-            if(action == "right" && currentLane < 2){
-                this.transitioning = true;
-
-                this.add.tween({
-                    targets: playerShip,
-                    x : arrowMovementR,
-                    duration: 200,
-                    ease: 'Cubic',
-                    onComplete: ()=> this.transitioning = false,
-                })
-                currentLane ++;
+            if(laneNumber = 1){
+                console.log("one lane");
             }
-
-            //Tween movement to left lane with left arrow key
-            if(action == "left" && currentLane > 0){
-                this.transitioning = true;
-
-                this.add.tween({
-                    targets: playerShip,
-                    x : arrowMovementL,
-                    duration: 200,
-                    ease: 'Cubic',
-                    onComplete: ()=> this.transitioning = false,
-                })
-                currentLane --;
+            if(laneNumber == 2){
+                if(action == "right" && currentLane < 2){
+                    this.transitioning = true;
+    
+                    this.add.tween({
+                        targets: playerShip,
+                        x : arrowMovementR,
+                        duration: 200,
+                        ease: 'Cubic',
+                        onComplete: ()=> this.transitioning = false,
+                    })
+                    currentLane ++;
+                }
+    
+                //Tween movement to left lane with left arrow key
+                if(action == "left" && currentLane > 1){
+                    this.transitioning = true;
+    
+                    this.add.tween({
+                        targets: playerShip,
+                        x : arrowMovementL,
+                        duration: 200,
+                        ease: 'Cubic',
+                        onComplete: ()=> this.transitioning = false,
+                    })
+                    currentLane --;
+                }
+            }
+            if(laneNumber == 3){
+                if(action == "right" && currentLane < 2){
+                    this.transitioning = true;
+    
+                    this.add.tween({
+                        targets: playerShip,
+                        x : arrowMovementR,
+                        duration: 200,
+                        ease: 'Cubic',
+                        onComplete: ()=> this.transitioning = false,
+                    })
+                    currentLane ++;
+                }
+    
+                //Tween movement to left lane with left arrow key
+                if(action == "left" && currentLane > 0){
+                    this.transitioning = true;
+    
+                    this.add.tween({
+                        targets: playerShip,
+                        x : arrowMovementL,
+                        duration: 200,
+                        ease: 'Cubic',
+                        onComplete: ()=> this.transitioning = false,
+                    })
+                    currentLane --;
+                }
             }
         }
 
@@ -503,6 +537,7 @@ class Play extends Phaser.Scene {
                 nextMap = mapNames.length -1;
             }
             this.swapMap2(nextMap)
+            this.laneAddition(nextMap)
             nextMap++
             //console.log(nextMap)
         }
@@ -592,6 +627,17 @@ class Play extends Phaser.Scene {
         let binaryData = this.scoreBinary(score);
         for (i = 0; i < 16; i++) {
             this.scores[i].setFrame(binaryData[i]);
+        }
+    }
+
+    laneAddition(index){
+
+        if(mapData[index] <= 5){
+            laneNumber = 1;
+        } else if(9 >= mapData[index] > 5 ){
+            laneNumber = 2;
+        } else if(mapData[index] > 9){
+            laneNumber = 3;
         }
     }
 }

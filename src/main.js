@@ -25,7 +25,7 @@ let visualsNew = null;
 let botLayerNew = null;
 let topLayerNew = null;
 var mapToRemove = null;
-
+let laneNumber = 1;
 let map1 = null;
 let map2 = null;
 let visuals1 = null;
