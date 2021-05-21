@@ -90,7 +90,10 @@ class Play extends Phaser.Scene {
         //setting the background color to eggshell
         //this.cameras.main.setBackgroundColor('#fbfbe3');
 
-        this.sound.play('music_sfx');
+        //sets music to loop and plays it
+        var music = this.sound.add('music_sfx');
+        music.setLoop(true);
+        music.play();
 
         //declaring local variables
         this.transitioning = false;
