@@ -7,6 +7,7 @@ var config = {
     scene : [Menu, Play, Gameover],
     parent: 'phaser_canvas',
     //autoCenter: true,
+    //debug: true
 };
 
 
@@ -79,6 +80,14 @@ let scrollSpeed = 5;
 
 //current lane of the player
 let currentLane = 1;
+
+//score UI spacing paramters:
+const dotVertSpacing = 50;
+const dotHorizSpacing = 50;
+
+const dotPaddingRight = game.config.width - 50;
+const dotPaddingTop = 50;
+
 
 
 //data structures and stuff for maps

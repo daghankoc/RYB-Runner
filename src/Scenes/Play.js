@@ -12,7 +12,7 @@ class Play extends Phaser.Scene {
         //this.load.tilemapTiledJSON('map', './maps/testmap_2.json');
         //this.load.tilemapTiledJSON('map1', './maps/map1.json');
 
-        //preload final maps.
+        //preload final maps. (CONVERT TO LOOP LATER)
 
         this.load.tilemapTiledJSON('easy1', './maps/maps_skill/easy1.json');
         this.load.tilemapTiledJSON('easy2', './maps/maps_skill/easy2.json');
@@ -79,7 +79,7 @@ class Play extends Phaser.Scene {
             frameHeight: 100,
         });
 
-        this.load.spritesheet('scoreUI', "./assets/ui/dotsscore.png",{
+        this.load.spritesheet('scoreUI', "./assets/ui/dotsscorealt.png",{
             frameWidth: 100,
             frameHeight: 100,
         });
@@ -102,6 +102,8 @@ class Play extends Phaser.Scene {
         this.curRed = 0;
         this.curColor = '';
         this.hitboxRGB;
+        this.scores = [];
+        this.currentScore;
 
 
         //Adding inputes to use
@@ -162,7 +164,7 @@ class Play extends Phaser.Scene {
         // this.circleOutline = this.add.sprite(screenCenterX - (arrowDist/2), 936, 'UI_circle_outline').setOrigin(0.5, 0.5);
         // this.circleOutline.setDepth('2');
 
-        //this.add.rectangle(0, screenCenterY * 1.9,screenCenterX * 2 , screenCenterY / 3, "0xffffff").setOrigin(0.5, 0.5);
+        //color UI
         this.redCircle = this.add.sprite(screenCenterX - (arrowDist/2), 935, 'redUI').setOrigin(0.5, 0.5);
         //this.redCircle.setTint("0xCF1313");
         this.redCircle.setDepth('1');
@@ -179,7 +181,10 @@ class Play extends Phaser.Scene {
         this.blueCircle.setDepth('1');
         this.blueCircle.scale = 0.3;
 
- 
+        //score UI
+        this.createScoreUI();
+
+        
     }
 
     update(){
@@ -272,8 +277,16 @@ class Play extends Phaser.Scene {
             }
         }
 
-        //run functions
+        //run collision functions
         if (!this.pause) { //if the game is not paused...
+
+            //update the score (if the score needs updating)
+            if (scoreCount != this.currentScore) {
+                this.updateScore(scoreCount);
+                this.currentScore = scoreCount;
+                //console.log("i am firing");
+            }
+            
             this.moveMap()
             // RGB of pixel under player (both layers) -1 mean no layer (#topLayer problems)
             this.hitboxRGB = this.getTilemapRGB();
@@ -285,12 +298,14 @@ class Play extends Phaser.Scene {
                 this.curRed = (this.hitboxRGB[0][0]); //otherwise, bottom layer is selected
             }
 
-            //console.log(this.whatColor(this.curRed));
-
             //check collisions after converting Red value to a color string.
             this.checkCollisions(this.whatColor(this.curRed), playerColor);
         }
     }  //end of update method
+
+
+    //-------------------------
+
 
     // function to figure out what color an RGB value is, This version only uses the R value.
     whatColor(redValue) {
@@ -534,5 +549,49 @@ class Play extends Phaser.Scene {
         topLayer2 = map2.createLayer('Tile Layer 2', [visuals2], mapX, map2relative);
         botLayer2.scale = tilemapScale;
         topLayer2.scale = tilemapScale;
+    }
+
+    //returns the (unsigned) binary data of a passed integer in 16 bits.
+    scoreBinary(score) {
+        if (score < 0) {
+            return 0;
+        }
+        let outputArr = [];
+        let num = score;
+        while(outputArr.length < 16) {
+            outputArr.push(num % 2);
+            num = Math.floor(num/2);
+        }
+        //console.log(outputArr)
+        return outputArr;
+    }
+
+    createScoreUI() {
+        let i = 0;
+        let posX = dotPaddingRight;
+        let posY = dotPaddingTop;
+
+        for (i = 1; i <= 16; i++) {
+            if (i == 9) {
+                posX -= dotHorizSpacing;
+                posY = dotPaddingTop;
+            }
+            let score = this.add.sprite(posX, posY, 'scoreUI').setOrigin(0.5, 0.5);
+            score.setDepth('1');
+            score.scale = 0.3;
+            score.setFrame(0);
+
+            this.scores.push(score);
+
+            posY += dotVertSpacing;
+        }
+    }
+
+    updateScore(score) {
+        let i = 0;
+        let binaryData = this.scoreBinary(score);
+        for (i = 0; i < 16; i++) {
+            this.scores[i].setFrame(binaryData[i]);
+        }
     }
 }
