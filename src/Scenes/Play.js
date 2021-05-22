@@ -56,6 +56,14 @@ class Play extends Phaser.Scene {
         //load image assets
         this.load.image('UI_circle','./assets/UI_circle.png');
         this.load.image('UI_circle_outline','./assets/UI_circle_outline.png');
+
+        //load tutorial assets
+        this.load.image('tutorial_move', "./assets/TutorialMove.png")
+        this.load.image('tutorial_cycle', "./assets/TutorialCycle.png")
+        this.load.image('tutorial_prepare', "./assets/TutorialPrepare.png")
+        this.load.image('tutorial_prepare_text', "./assets/TutorialPrepareJustText.png")
+        this.load.image('tutorial_barrier', "./assets/TutorialBarrier.png")
+
     
         //loading the different player colors as spritesheets
         //frame 1 = red, 2 = blue, 3 = yellow 
@@ -555,6 +563,57 @@ class Play extends Phaser.Scene {
         rawDist += scrollSpeed; //use this for the tutorial spacing
 
         scoreCount = Math.floor((rawDist / tilemapScale) / 200)
+
+        //tutorial 
+        //this.tutorialcycle = this.add.image(315, 600, 'tutorial_cycle')
+        //this.tutorialcycle = this.add.image(800, 500, 'tutorial_cycle')
+        if(rawDist == -300){
+            let tutorialcycle = this.add.image(800, 550, 'tutorial_cycle')
+            this.tweens.add({
+                targets: tutorialcycle,
+                alpha: 0,
+                duration: 7000,
+                ease: 'cubic'
+              }, this);
+        }
+        if(rawDist == 1650){
+            let tutorialprepare = this.add.image(800, 550, 'tutorial_prepare')
+            this.tweens.add({
+                targets: tutorialprepare,
+                alpha: 0,
+                duration: 7000,
+                ease: 'cubic'
+              }, this);
+        }
+        if(rawDist == 5600){
+            let tutorialprepare = this.add.image(800, 550, 'tutorial_prepare')
+            this.tweens.add({
+                targets: tutorialprepare,
+                alpha: 0,
+                duration: 7000,
+                ease: 'cubic'
+              }, this);
+        }
+        if(rawDist == 9400){
+            let tutorialmove = this.add.image(800, 550, 'tutorial_move')
+            this.tweens.add({
+                targets: tutorialmove,
+                alpha: 0,
+                duration: 7000,
+                ease: 'cubic'
+              }, this);
+        }
+        if(rawDist == 28800){
+            let tutorialbarrier = this.add.image(800, 550, 'tutorial_barrier')
+            this.tweens.add({
+                targets: tutorialbarrier,
+                alpha: 0,
+                duration: 7000,
+                ease: 'cubic'
+              }, this);
+        }
+        //console.log(rawDist)
+
         //console.log(scoreCount);
     }
     
