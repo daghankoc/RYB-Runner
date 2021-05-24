@@ -568,7 +568,8 @@ class Play extends Phaser.Scene {
         //this.tutorialcycle = this.add.image(315, 600, 'tutorial_cycle')
         //this.tutorialcycle = this.add.image(800, 500, 'tutorial_cycle')
         if(rawDist == -300){
-            let tutorialcycle = this.add.image(800, 550, 'tutorial_cycle')
+            let tutorialcycle = this.add.image(570, 550, 'tutorial_cycle')
+            tutorialcycle.scale = 0.43
             this.tweens.add({
                 targets: tutorialcycle,
                 alpha: 0,
@@ -577,7 +578,8 @@ class Play extends Phaser.Scene {
               }, this);
         }
         if(rawDist == 1650){
-            let tutorialprepare = this.add.image(800, 550, 'tutorial_prepare')
+            let tutorialprepare = this.add.image(570, 550, 'tutorial_prepare')
+            tutorialprepare.scale = 0.43
             this.tweens.add({
                 targets: tutorialprepare,
                 alpha: 0,
@@ -586,7 +588,8 @@ class Play extends Phaser.Scene {
               }, this);
         }
         if(rawDist == 5600){
-            let tutorialprepare = this.add.image(800, 550, 'tutorial_prepare')
+            let tutorialprepare = this.add.image(570, 550, 'tutorial_prepare')
+            tutorialprepare.scale = 0.43
             this.tweens.add({
                 targets: tutorialprepare,
                 alpha: 0,
@@ -595,7 +598,8 @@ class Play extends Phaser.Scene {
               }, this);
         }
         if(rawDist == 9400){
-            let tutorialmove = this.add.image(800, 550, 'tutorial_move')
+            let tutorialmove = this.add.image(570, 550, 'tutorial_move')
+            tutorialmove.scale = 0.43
             this.tweens.add({
                 targets: tutorialmove,
                 alpha: 0,
@@ -604,7 +608,8 @@ class Play extends Phaser.Scene {
               }, this);
         }
         if(rawDist == 28800){
-            let tutorialbarrier = this.add.image(800, 550, 'tutorial_barrier')
+            let tutorialbarrier = this.add.image(570, 550, 'tutorial_barrier')
+            tutorialbarrier.scale = 0.43
             this.tweens.add({
                 targets: tutorialbarrier,
                 alpha: 0,
