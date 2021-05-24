@@ -35,6 +35,9 @@ let topLayer1 = null;
 let botLayer2 = null;
 let topLayer2 = null;
 
+//maps that lane change happens
+let thirdLane = 8;
+let secondLane = 2;
 
 // Screen Centers
 const screenCenterY = game.config.height/2;

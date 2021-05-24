@@ -258,9 +258,6 @@ class Play extends Phaser.Scene {
                     this.redCircle.setFrame(1);
                 }
             }
-            if(laneNumber = 1){
-                console.log("one lane");
-            }
             if(laneNumber == 2){
                 if(action == "right" && currentLane < 2){
                     this.transitioning = true;
@@ -534,6 +531,7 @@ class Play extends Phaser.Scene {
                 nextMap = mapNames.length -1;
             }
             this.swapMap1(nextMap);
+            this.laneAddition(nextMap)
             nextMap++;
             //console.log(nextMap)
         }
@@ -695,12 +693,9 @@ class Play extends Phaser.Scene {
     }
 
     laneAddition(index){
-
-        if(mapData[index] <= 5){
-            laneNumber = 1;
-        } else if(9 >= mapData[index] > 5 ){
+        if(index >= secondLane && index < thirdLane - 1){
             laneNumber = 2;
-        } else if(mapData[index] > 9){
+        }  else if(index >= thirdLane){
             laneNumber = 3;
         }
     }
