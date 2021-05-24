@@ -20,7 +20,7 @@ class Menu extends Phaser.Scene {
             },
             fixedWidth: 0
         }
-        this.ryb = this.add.image(350, 250, 'ryb_logo');
+        this.ryb = this.add.image(325, 250, 'ryb_logo');
         //const startButton = this.add.text(game.config.width/2, game.config.height/2, 'START', menuConfig).setOrigin(0.5)
         //.setInteractive()
         // .on('pointerdown', () => this.scene.start("playScene"));
