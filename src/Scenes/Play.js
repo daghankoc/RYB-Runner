@@ -571,8 +571,7 @@ class Play extends Phaser.Scene {
             this.tweens.add({
                 targets: tutorialcycle,
                 alpha: 0,
-                duration: 7000,
-                ease: 'cubic'
+                duration: 6000
               }, this);
         }
         if(rawDist == 1650){
@@ -581,8 +580,7 @@ class Play extends Phaser.Scene {
             this.tweens.add({
                 targets: tutorialprepare,
                 alpha: 0,
-                duration: 7000,
-                ease: 'cubic'
+                duration: 9000
               }, this);
         }
         if(rawDist == 5600){
@@ -591,8 +589,7 @@ class Play extends Phaser.Scene {
             this.tweens.add({
                 targets: tutorialprepare,
                 alpha: 0,
-                duration: 7000,
-                ease: 'cubic'
+                duration: 11000
               }, this);
         }
         if(rawDist == 9400){
@@ -601,8 +598,7 @@ class Play extends Phaser.Scene {
             this.tweens.add({
                 targets: tutorialmove,
                 alpha: 0,
-                duration: 7000,
-                ease: 'cubic'
+                duration: 5000
               }, this);
         }
         if(rawDist == 28800){
@@ -611,8 +607,7 @@ class Play extends Phaser.Scene {
             this.tweens.add({
                 targets: tutorialbarrier,
                 alpha: 0,
-                duration: 7000,
-                ease: 'cubic'
+                duration: 7000
               }, this);
         }
         //console.log(rawDist)
