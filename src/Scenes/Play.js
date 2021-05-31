@@ -165,11 +165,11 @@ class Play extends Phaser.Scene {
 
         //setting the player to color red for the start
         playerShip.setFrame(0);
-        playerShip.currentFrame = 0 
+        playerShip.currentFrame = 0
 
 
         //rendering the ship above the lane
-        playerShip.setDepth('1');    
+        playerShip.setDepth('1');
 
         //creating a bottom UI bar for the color indicator
         // this.circleOutline = this.add.sprite(screenCenterX - (arrowDist/2), 936, 'UI_circle_outline').setOrigin(0.5, 0.5);
@@ -515,6 +515,15 @@ class Play extends Phaser.Scene {
             this.sound.play('move_sfx');
             this.pause = true;
             this.crashing = false;
+
+            //map1.destroy();
+
+            //map2.destroy();
+            //this.scene.remove('playScene')
+            //this.scene.add('playScene')
+            //this.scene.restart();
+            //this.scene.restart();
+            this.scene.start('gameoverScene')
         }
         tileColor = newTile;
     }

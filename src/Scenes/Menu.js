@@ -33,9 +33,9 @@ class Menu extends Phaser.Scene {
                 x: -250,
                 duration: 2000,
                 ease: 'Cubic',
-                onComplete: ()=> this.scene.stop('menuScene'),
+                onComplete: ()=> this.scene.start('playScene'),
             });
-            this.scene.launch('playScene')
+            //this.scene.start('playScene')
         });
 
         
