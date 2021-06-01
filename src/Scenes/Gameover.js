@@ -29,11 +29,11 @@ class Gameover extends Phaser.Scene{
         .setInteractive()
         .on('pointerdown', () => {
             this.tweens.add({
-                targets: [this.ryb, this.restartButton, this.gameover, this.score],
+                targets: [this.ryb, this.restartButton, this.gameover, this.score, this.scoreUI],
                 x: -250,
                 duration: 2000,
                 ease: 'Cubic',
-                onComplete: ()=> this.scene.start('playScene'),
+                onComplete: ()=> location.reload(),
             });
             //this.scene.stop('playScene')
             //this.scene.start('playScene')
