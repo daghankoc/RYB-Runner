@@ -165,11 +165,11 @@ class Play extends Phaser.Scene {
 
         //setting the player to color red for the start
         playerShip.setFrame(0);
-        playerShip.currentFrame = 0 
+        playerShip.currentFrame = 0
 
 
         //rendering the ship above the lane
-        playerShip.setDepth('1');    
+        playerShip.setDepth('1');
 
         //creating a bottom UI bar for the color indicator
         // this.circleOutline = this.add.sprite(screenCenterX - (arrowDist/2), 936, 'UI_circle_outline').setOrigin(0.5, 0.5);
@@ -519,6 +519,16 @@ class Play extends Phaser.Scene {
             this.sound.play('move_sfx');
             this.pause = true;
             this.crashing = false;
+
+            //map1.destroy();
+
+            //map2.destroy();
+            //this.scene.remove('playScene')
+            //this.scene.add('playScene')
+            //this.scene.restart();
+            //this.scene.restart();
+            this.scene.stop('playScene')
+            this.scene.launch('gameoverScene')
         }
         tileColor = newTile;
     }
@@ -574,8 +584,7 @@ class Play extends Phaser.Scene {
             this.tweens.add({
                 targets: tutorialcycle,
                 alpha: 0,
-                duration: 7000,
-                ease: 'cubic'
+                duration: 6000
               }, this);
         }
         if(rawDist == 1650){
@@ -584,8 +593,7 @@ class Play extends Phaser.Scene {
             this.tweens.add({
                 targets: tutorialprepare,
                 alpha: 0,
-                duration: 7000,
-                ease: 'cubic'
+                duration: 9000
               }, this);
         }
         if(rawDist == 5600){
@@ -594,8 +602,7 @@ class Play extends Phaser.Scene {
             this.tweens.add({
                 targets: tutorialprepare,
                 alpha: 0,
-                duration: 7000,
-                ease: 'cubic'
+                duration: 11000
               }, this);
         }
         if(rawDist == 9400){
@@ -604,8 +611,7 @@ class Play extends Phaser.Scene {
             this.tweens.add({
                 targets: tutorialmove,
                 alpha: 0,
-                duration: 7000,
-                ease: 'cubic'
+                duration: 5000
               }, this);
         }
         if(rawDist == 28800){
@@ -614,8 +620,7 @@ class Play extends Phaser.Scene {
             this.tweens.add({
                 targets: tutorialbarrier,
                 alpha: 0,
-                duration: 7000,
-                ease: 'cubic'
+                duration: 7000
               }, this);
         }
         //console.log(rawDist)
