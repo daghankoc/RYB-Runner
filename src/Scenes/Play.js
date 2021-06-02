@@ -387,7 +387,7 @@ class Play extends Phaser.Scene {
         //also gather tile data
 
         if (Math.abs(map1Pos) <= (Math.abs(map1relative + arrowY)) && map1Pos < arrowY) {
-            tileY = ((map1Pos + map2relative - arrowHeight) / tilemapScale) % 200;
+            tileY = (((map1Pos - arrowY) + map1relative) / tilemapScale) % 200;
             tileY = Math.abs(Math.floor(tileY)); // weird shit with the positioning since map1 pos can be pos and neg.
             //console.log(tileY);
 
@@ -396,13 +396,17 @@ class Play extends Phaser.Scene {
 
         }
         if (Math.abs(map2Pos) <= (Math.abs(map1relative + arrowY)) && map2Pos < arrowY) {
-            tileY = ((map2Pos + map2relative - arrowHeight) / tilemapScale) % 200;
+            tileY = (((map1Pos - arrowY) + map1relative) / tilemapScale) % 200;
             tileY = Math.abs(Math.floor(tileY));
 
             tileToCheckTop = topLayer2.getTileAtWorldXY(playerShip.x, playerShip.y, true);
             tileToCheckBot = botLayer2.getTileAtWorldXY(playerShip.x, playerShip.y, true);
             //console.log(tileY);
         }
+
+        // if (tileY = 0) {
+        //     tileY = 199;
+        // }
     
         //determines ship X value and then converts to tileX
         tileX = Math.floor(((playerShip.x - mapX) / tilemapScale)) % 200;
@@ -555,7 +559,6 @@ class Play extends Phaser.Scene {
         topLayer2.setPosition(mapX, map2Pos);
     
         //step maps forward
-        //if has crashed is false
         map1dist += scrollSpeed;
         map2dist += scrollSpeed;
         rawDist += scrollSpeed; //use this for the tutorial spacing

@@ -1,3 +1,31 @@
+/* 
+Title: RYB
+A game by Kai Turner, Daghan Koc, Julian Liaw, & Nathan Tejeda
+Completed: June 2nd 2021
+
+RYB, the prototype of our final game ‘CMYK’ was an absolute challenge to create. Notably, we 
+are using Phaser tile maps in a way that Phaser never intended tile maps to be used, actively 
+swapping out the contents of map objects every so often to keep map order random and continuous. 
+In addition, we created entirely custom hit detection code that compares the value of the pixel 
+underneath the player with the player itself. This code ended up being substantially more 
+complicated to make work than we had for-seen, thus pushing us behind majorly with the game. 
+However once we got it working, we were surprised to see that it performed much better than we were 
+expecting. Possibly the single greatest technical achievement with the game.
+
+We are very proud of the aesthetic style of the game. We focused heavily on making the game clean, 
+minimal, and simple to play and understand, utilizing an art style inspired from mobile puzzle games 
+and graphic design theory. Th game score counter displays the score in binary, allowing the player to 
+visually see their progress, but not distract them with numbers. Lastly, we think that the color 
+switching mechanic, while simple, is a reasonably unique mechanic that sets our game apart. Levels 
+can be traversed in a number of different ways, and the player can master the game over time by 
+learning the patterns of the different maps and mastering the controls.
+
+Shoutout tutor Jameson for supporting us when we were down and helping us get the chance to accomplish what we wanted to 
+with both RYB and CMYK. <3
+*/
+
+
+
 var config = {
     type: Phaser.AUTO,
     width: 640,
@@ -99,7 +127,6 @@ const dotPaddingTop = 50;
 let mapsEasy = ['easy1', 'easy2', 'easy3'];
 let mapsMid = ['mid1', 'mid2', 'mid3', 'mid4'];
 let mapsHard = ['hard1', 'hard2', 'hard3', 'hard4', 'hard5', 'hard6', 'hard7'];
-let mapsHardAlt = ['map1', 'map2', 'map3', 'map4', 'map5', 'map6', 'map7', 'testmap_2']; //not working
 
 //future function that defines a random map order for each game, but still conforms to tutorial order and difficulty.
 function createMapOrder() {
