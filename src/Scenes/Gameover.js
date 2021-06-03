@@ -5,6 +5,7 @@ class Gameover extends Phaser.Scene{
 
     preload(){
         this.load.image('ryb_logo', './assets/RYB_logo_linear.png');
+        this.load.audio('menu_sfx', './assets/audio/sfx/pop.wav')
     }
     create(){
         let menuConfig = {
@@ -28,10 +29,11 @@ class Gameover extends Phaser.Scene{
         this.restartButton = this.add.text(game.config.width/2, game.config.height/1.2, 'RESTART', menuConfig).setOrigin(0.5)
         .setInteractive()
         .on('pointerdown', () => {
+            this.sound.play('menu_sfx');
             this.tweens.add({
                 targets: [this.ryb, this.restartButton, this.gameover, this.score, this.scoreUI],
                 x: -250,
-                duration: 2000,
+                duration: 1000,
                 ease: 'Cubic',
                 onComplete: ()=> location.reload(),
             });

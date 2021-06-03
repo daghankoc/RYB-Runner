@@ -130,7 +130,8 @@ let mapsHard = ['hard1', 'hard2', 'hard3', 'hard4', 'hard5', 'hard6', 'hard7'];
 
 //future function that defines a random map order for each game, but still conforms to tutorial order and difficulty.
 function createMapOrder() {
-    return mapsEasy.concat(mapsMid, mapsHard); //currently puts maps in order.
+    
+    return mapsEasy.concat(mapsMid, shuffle(mapsHard)); //currently puts maps in order.
 }
 
 let mapNames = createMapOrder(); //populate map names order
@@ -140,3 +141,16 @@ let nextMap = 2; //counter used to index through mapNames array, change to start
 if (nextMap >= mapNames.length) { //puts you on the last map even if nextMap is set to a number greater than the number of maps loaded. (safety net)
     nextMap = mapNames.length - 1;
 }
+
+//Fisher–Yates array shuffle function, written by Mike Bostock, retrieved from https://bost.ocks.org/mike/shuffle/
+
+function shuffle(array) {
+    var m = array.length, t, i;
+    while (m) {
+      i = Math.floor(Math.random() * m--);
+      t = array[m];
+      array[m] = array[i];
+      array[i] = t;
+    }
+    return array;
+  }

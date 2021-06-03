@@ -5,6 +5,7 @@ class Menu extends Phaser.Scene {
     
     preload(){
         this.load.image('ryb_logo', './assets/RYB_logo_linear.png');
+        this.load.audio('menu_sfx', './assets/audio/sfx/pop.wav')
     }
 
     create(){
@@ -28,6 +29,7 @@ class Menu extends Phaser.Scene {
         this.startButton = this.add.text(game.config.width/2, game.config.height/1.2, 'START', menuConfig).setOrigin(0.5)
         .setInteractive()
         .on('pointerdown', () => {
+            this.sound.play('menu_sfx');
             this.tweens.add({
                 targets: [this.ryb, this.startButton],
                 x: -250,

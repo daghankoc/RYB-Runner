@@ -671,6 +671,7 @@ class Play extends Phaser.Scene {
     swapMap2(index) {
         map2 = mapData[index];
         //visuals2 = map2.addTilesetImage('spritesheet', 'tiles');
+        scrollSpeed++;
 
         botLayer2.destroy();
         topLayer2.destroy();
