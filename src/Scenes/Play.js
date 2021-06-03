@@ -100,9 +100,6 @@ class Play extends Phaser.Scene {
     
     
     create() {
-        //setting the background color to eggshell
-        //this.cameras.main.setBackgroundColor('#fbfbe3');
-
         //sets music to loop and plays it
         music = this.sound.add('music_sfx');
         music.setLoop(true);
@@ -142,7 +139,6 @@ class Play extends Phaser.Scene {
         //console.log(mapData);
         
         //map1 intialization
-        //map1 = this.add.tilemap('hard2');
         map1 = mapData[0];
         visuals1 = map1.addTilesetImage('spritesheet', 'tiles'); //change "base" to "spritesheet" when we add the loading stuff update
         botLayer1 = map1.createLayer('Tile Layer 1', [visuals1], mapX, map1relative);
@@ -150,10 +146,6 @@ class Play extends Phaser.Scene {
         botLayer1.scale = tilemapScale;
         topLayer1.scale = tilemapScale;
 
-        // nextMap++; //incraments the map counter
-        // if (nextMap >= mapNames.length) {
-        //     nextMap = 8;
-        // }
 
         //map2 initialization
         map2 = mapData[1];
@@ -176,9 +168,6 @@ class Play extends Phaser.Scene {
         //rendering the ship above the lane
         playerShip.setDepth('1');
 
-        //creating a bottom UI bar for the color indicator
-        // this.circleOutline = this.add.sprite(screenCenterX - (arrowDist/2), 936, 'UI_circle_outline').setOrigin(0.5, 0.5);
-        // this.circleOutline.setDepth('2');
 
         //color UI
         this.redCircle = this.add.sprite(screenCenterX - (arrowDist/2), 935, 'redUI').setOrigin(0.5, 0.5);
@@ -577,7 +566,7 @@ class Play extends Phaser.Scene {
             this.swapMap1(nextMap);
             this.laneAddition(nextMap)
             nextMap++;
-            //console.log(nextMap)
+            this.mapSpeed(nextMap)
         }
     
         if (map2Pos > game.config.height + 50) {
@@ -589,7 +578,7 @@ class Play extends Phaser.Scene {
             this.swapMap2(nextMap)
             this.laneAddition(nextMap)
             nextMap++
-            //console.log(nextMap)
+            this.mapSpeed(nextMap)
         }
         
         
@@ -736,6 +725,18 @@ class Play extends Phaser.Scene {
             laneNumber = 2;
         }  else if(index >= thirdLane){
             laneNumber = 3;
+        }
+    }
+
+    mapSpeed(mapCount) {
+        if (scrollSpeed < 8) {
+            if (mapCount % speedIncrease == 0) {
+                scrollSpeed++;
+            }
+    
+            if (mapCount == 6) {
+                scrollSpeed = 3;
+            }
         }
     }
 

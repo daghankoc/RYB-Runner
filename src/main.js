@@ -107,6 +107,7 @@ let rawDist = -arrowY;
 
 //scrolling rate (start)
 let scrollSpeed = 5;
+const speedIncrease = 4; // number of maps that pass before the scroll speed is increased.
 
 //current lane of the player
 let currentLane = 1;
