@@ -38,16 +38,16 @@ class Play extends Phaser.Scene {
         this.load.audio('move_sfx', './assets/audio/testSound.wav')
 
         //sound effect that plays when you cycle colors
-        this.load.audio('cycle_sfx', './assets/audio/testSound.wav')
+        this.load.audio('cycle_sfx', './assets/audio/sfx/snap.wav')
 
         //sound effect that plays when you cross into a new color zone (successfully)
-        this.load.audio('transition_sfx', './assets/audio/testSound.wav')
+        this.load.audio('transition_sfx', './assets/audio/sfx/clap.wav')
 
         //sound effect that plays when you pause or use a menu button
-        this.load.audio('menu_sfx', './assets/audio/testSound.wav')
+        this.load.audio('menu_sfx', './assets/audio/sfx/pop.wav')
 
         //sound effect that plays when you crash :(
-        this.load.audio('menu_sfx', './assets/audio/testSound.wav')
+        this.load.audio('crash_sfx', './assets/audio/sfx/crash.wav')
 
         //background music
         this.load.audio('music_sfx', './assets/audio/testMusic.mp3')
@@ -99,7 +99,7 @@ class Play extends Phaser.Scene {
         //this.cameras.main.setBackgroundColor('#fbfbe3');
 
         //sets music to loop and plays it
-        var music = this.sound.add('music_sfx');
+        music = this.sound.add('music_sfx');
         music.setLoop(true);
         music.play();
 
@@ -222,13 +222,14 @@ class Play extends Phaser.Scene {
 
         if (Phaser.Input.Keyboard.JustDown(keyPause)) { //pause button, needs menu?
             this.pause = !this.pause;
-            this.sound.play('move_sfx');
+            this.sound.play('menu_sfx');
         }
         
         
         if (!this.transitioning && this.actionQueue.length > 0) {
             let action = this.actionQueue.shift();
             if (action == "space") {
+                this.playerRevBump();
                 if (playerShip.currentFrame == 0)
                 {
                     //console.log("Color switched to yellow");
@@ -487,21 +488,27 @@ class Play extends Phaser.Scene {
                     if (player != 'red') {
                         this.crashing = true;
                     } else {
+                        this.playerBump();
                         console.log('safe red');
+                        this.sound.play('transition_sfx');
                     }
                     break;
                 case 'yellow':
                     if (player != 'yellow') {
                         this.crashing = true;
                     } else {
+                        this.playerBump();
                         console.log('safe yellow');
+                        this.sound.play('transition_sfx');
                     }
                     break;
                 case 'blue':
                     if (player != 'blue') {
                         this.crashing = true;
                     } else {
+                        this.playerBump();
                         console.log('safe blue');
+                        this.sound.play('transition_sfx');
                     }
                     break;
                 case 'barrier':
@@ -516,9 +523,22 @@ class Play extends Phaser.Scene {
         }
         if (this.crashing) { //if a crash has been detected
             console.log('crashed!');
-            this.sound.play('move_sfx');
+            //this.sound.stop('music_sfx');
+            music.stop()
+            this.sound.play('crash_sfx');
             this.pause = true;
             this.crashing = false;
+
+            //this.playerBump();
+            this.playerDeath();
+
+            this.time.addEvent({
+                delay: 1100,
+                callback: ()=>{
+                    this.endScene();
+                },
+                loop: false
+            })
 
             //map1.destroy();
 
@@ -527,10 +547,15 @@ class Play extends Phaser.Scene {
             //this.scene.add('playScene')
             //this.scene.restart();
             //this.scene.restart();
-            this.scene.stop('playScene')
-            this.scene.launch('gameoverScene')
+            //this.scene.stop('playScene');
+            //this.scene.launch('gameoverScene');
         }
         tileColor = newTile;
+    }
+
+    endScene() {
+        this.scene.stop('playScene');
+        this.scene.launch('gameoverScene');
     }
     
     moveMap() {
@@ -706,5 +731,52 @@ class Play extends Phaser.Scene {
         }  else if(index >= thirdLane){
             laneNumber = 3;
         }
+    }
+
+    //effects:
+
+    playerBump() {
+        this.add.tween({
+            targets: playerShip,
+            scale : arrowScale+ 0.1,
+            duration: 50,
+            ease: 'cubic',
+            onComplete: ()=> this.add.tween({
+                targets: playerShip,
+                scale : arrowScale,
+                duration: 50,
+                ease: 'cubic',
+            }),
+        })
+    }
+
+    playerRevBump() {
+        this.add.tween({
+            targets: playerShip,
+            scale : arrowScale- 0.05,
+            duration: 50,
+            ease: 'cubic',
+            onComplete: ()=> this.add.tween({
+                targets: playerShip,
+                scale : arrowScale,
+                duration: 50,
+                ease: 'cubic',
+            }),
+        })
+    }
+
+    playerDeath() {
+        this.add.tween({
+            targets: playerShip,
+            scale : 1,
+            duration: 1100,
+            ease: 'cubic',
+        })
+        this.add.tween({
+            targets: playerShip,
+            alpha : 0,
+            duration: 1100,
+            ease: 'cubic',
+        })
     }
 }

@@ -78,7 +78,6 @@ const arrowScale = 0.5;
 //Map horizontal offet to make sure it's always centered
 const mapX = screenCenterX - (tilemapScale * 300);
 
-
 //Arrow Y pos
 const arrowY = screenCenterY + (screenCenterY / 2); //720
 const arrowHeight = game.config.height - arrowY; //240
@@ -119,7 +118,8 @@ const dotHorizSpacing = 50;
 const dotPaddingRight = game.config.width - 50;
 const dotPaddingTop = 50;
 
-
+//let there be music
+let music;
 
 //data structures and stuff for maps
 
