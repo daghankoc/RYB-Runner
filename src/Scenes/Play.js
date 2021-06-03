@@ -729,14 +729,14 @@ class Play extends Phaser.Scene {
     }
 
     mapSpeed(mapCount) {
-        if (scrollSpeed < 8) {
-            if (mapCount % speedIncrease == 0) {
-                scrollSpeed++;
-            }
-    
-            if (mapCount == 6) {
-                scrollSpeed = 3;
-            }
+        if (mapCount % speedIncrease == 0) {
+            scrollSpeed++;
+        }
+        if (scrollSpeed == 9) {
+            scrollSpeed = 4;
+        }
+        if (mapCount == 10) {
+            scrollSpeed = 4;
         }
     }
 
