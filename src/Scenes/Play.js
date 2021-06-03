@@ -30,6 +30,11 @@ class Play extends Phaser.Scene {
         this.load.tilemapTiledJSON('hard5', './maps/maps_skill/hard5.json');
         this.load.tilemapTiledJSON('hard6', './maps/maps_skill/hard6.json');
         this.load.tilemapTiledJSON('hard7', './maps/maps_skill/hard7.json');
+        this.load.tilemapTiledJSON('hard8', './maps/maps_skill/hard8.json');
+        this.load.tilemapTiledJSON('hard9', './maps/maps_skill/hard9.json');
+        this.load.tilemapTiledJSON('hard10', './maps/maps_skill/hard10.json');
+        this.load.tilemapTiledJSON('hard11', './maps/maps_skill/hard11.json');
+        this.load.tilemapTiledJSON('hard12', './maps/maps_skill/hard12.json');
 
         this.load.tilemapTiledJSON('indexTest', './maps/indexTesting.json');
 

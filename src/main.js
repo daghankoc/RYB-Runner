@@ -126,7 +126,7 @@ let music;
 //map name arrays, must be updated when new maps are added
 let mapsEasy = ['easy1', 'easy2', 'easy3'];
 let mapsMid = ['mid1', 'mid2', 'mid3', 'mid4'];
-let mapsHard = ['hard1', 'hard2', 'hard3', 'hard4', 'hard5', 'hard6', 'hard7'];
+let mapsHard = ['hard1', 'hard2', 'hard3', 'hard4', 'hard5', 'hard6', 'hard7', 'hard8', 'hard9', 'hard10', 'hard11', 'hard12'];
 
 //future function that defines a random map order for each game, but still conforms to tutorial order and difficulty.
 function createMapOrder() {
