@@ -131,7 +131,6 @@ let mapsHard = ['hard1', 'hard2', 'hard3', 'hard4', 'hard5', 'hard6', 'hard7', '
 
 //future function that defines a random map order for each game, but still conforms to tutorial order and difficulty.
 function createMapOrder() {
-    
     return mapsEasy.concat(mapsMid, shuffle(mapsHard)); //currently puts maps in order.
 }
 

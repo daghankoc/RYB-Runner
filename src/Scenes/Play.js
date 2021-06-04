@@ -200,12 +200,12 @@ class Play extends Phaser.Scene {
         //Tween movement to right lane with right arrow key 
         if (Phaser.Input.Keyboard.JustDown(keyRight)) {
             this.actionQueue.push("right");
-            this.sound.play('move_sfx');
+            //this.sound.play('move_sfx');
         }
 
         if (Phaser.Input.Keyboard.JustDown(keyLeft)) {
             this.actionQueue.push("left");
-            this.sound.play('move_sfx')
+            //this.sound.play('move_sfx')
         }
 
         if (Phaser.Input.Keyboard.JustDown(spaceBar)) {
@@ -270,7 +270,7 @@ class Play extends Phaser.Scene {
                 //Tween movement to left lane with left arrow key
                 if(action == "left" && currentLane > 1){
                     this.transitioning = true;
-    
+                    this.sound.play('move_sfx');
                     this.add.tween({
                         targets: playerShip,
                         x : arrowMovementL,
@@ -284,7 +284,7 @@ class Play extends Phaser.Scene {
             if(laneNumber == 3){
                 if(action == "right" && currentLane < 2){
                     this.transitioning = true;
-    
+                    this.sound.play('move_sfx');
                     this.add.tween({
                         targets: playerShip,
                         x : arrowMovementR,
@@ -298,7 +298,7 @@ class Play extends Phaser.Scene {
                 //Tween movement to left lane with left arrow key
                 if(action == "left" && currentLane > 0){
                     this.transitioning = true;
-    
+                    this.sound.play('move_sfx');
                     this.add.tween({
                         targets: playerShip,
                         x : arrowMovementL,
@@ -733,10 +733,10 @@ class Play extends Phaser.Scene {
             scrollSpeed++;
         }
         if (scrollSpeed == 9) {
-            scrollSpeed = 4;
+            scrollSpeed = 5;
         }
-        if (mapCount == 10) {
-            scrollSpeed = 4;
+        if (mapCount == 9) {
+            scrollSpeed = 5;
         }
     }
 
