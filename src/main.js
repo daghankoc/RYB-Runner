@@ -65,7 +65,7 @@ let topLayer2 = null;
 
 //maps that lane change happens
 let thirdLane = 8;
-let secondLane = 2;
+let secondLane = 3;
 
 // Screen Centers
 const screenCenterY = game.config.height/2;
@@ -107,7 +107,7 @@ let rawDist = -arrowY;
 
 //scrolling rate (start)
 let scrollSpeed = 5;
-const speedIncrease = 4; // number of maps that pass before the scroll speed is increased.
+const speedIncrease = 3; // number of maps that pass before the scroll speed is increased.
 
 //current lane of the player
 let currentLane = 1;
@@ -138,9 +138,9 @@ let mapNames = createMapOrder(); //populate map names order
 let mapData = [];
 let nextMap = 2; //counter used to index through mapNames array, change to start on a particular map (after maps 1 and 2 pass) (DEFUALT IS 2)
 
-if (nextMap >= mapNames.length) { //puts you on the last map even if nextMap is set to a number greater than the number of maps loaded. (safety net)
-    nextMap = mapNames.length - 1;
-}
+// if (nextMap >= mapNames.length) { //puts you on the last map even if nextMap is set to a number greater than the number of maps loaded. (safety net)
+//     nextMap = mapNames.length - 1;
+// }
 
 //Fisher–Yates array shuffle function, written by Mike Bostock, retrieved from https://bost.ocks.org/mike/shuffle/
 

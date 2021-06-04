@@ -171,25 +171,20 @@ class Play extends Phaser.Scene {
 
         //color UI
         this.redCircle = this.add.sprite(screenCenterX - (arrowDist/2), 935, 'redUI').setOrigin(0.5, 0.5);
-        //this.redCircle.setTint("0xCF1313");
         this.redCircle.setDepth('1');
         this.redCircle.scale = 0.3;
         this.redCircle.setFrame(1)
         
         this.yellowCircle = this.add.sprite(screenCenterX, 935, 'yellowUI').setOrigin(0.5, 0.5);
-        //this.yellowCircle.setTint("0xeed456");
         this.yellowCircle.setDepth('1');
         this.yellowCircle.scale = 0.3;
 
         this.blueCircle = this.add.sprite(screenCenterX + (arrowDist/2), 935, 'blueUI').setOrigin(0.5, 0.5);
-        //this.blueCircle.setTint("0x1181D9");
         this.blueCircle.setDepth('1');
         this.blueCircle.scale = 0.3;
 
         //score UI
         this.createScoreUI();
-
-        
     }
 
     update(){
@@ -256,7 +251,7 @@ class Play extends Phaser.Scene {
             if(laneNumber == 2){
                 if(action == "right" && currentLane < 2){
                     this.transitioning = true;
-    
+                    this.sound.play('move_sfx');
                     this.add.tween({
                         targets: playerShip,
                         x : arrowMovementR,
@@ -311,7 +306,7 @@ class Play extends Phaser.Scene {
             }
         }
 
-        //run collision functions
+        //run functions
         if (!this.pause) { //if the game is not paused...
 
             //update the score (if the score needs updating)
@@ -633,7 +628,7 @@ class Play extends Phaser.Scene {
                 duration: 5000
               }, this);
         }
-        if(rawDist == 28800){
+        if(rawDist > 28800 && rawDist < 28820){
             let tutorialbarrier = this.add.image(570, 550, 'tutorial_barrier')
             tutorialbarrier.scale = 0.43
             this.tweens.add({
@@ -651,8 +646,6 @@ class Play extends Phaser.Scene {
     //swap map functions, uses mapData array which is constructed in the create method.
     swapMap1(index) {
         map1 = mapData[index];
-        //visuals1 = map1.addTilesetImage('spritesheet', 'tiles');
-        
         botLayer1.destroy();
         topLayer1.destroy();
 
@@ -664,9 +657,6 @@ class Play extends Phaser.Scene {
     
     swapMap2(index) {
         map2 = mapData[index];
-        //visuals2 = map2.addTilesetImage('spritesheet', 'tiles');
-        scrollSpeed++;
-
         botLayer2.destroy();
         topLayer2.destroy();
 
